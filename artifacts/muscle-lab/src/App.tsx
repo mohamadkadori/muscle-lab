@@ -15,6 +15,7 @@ import Exercises from '@/pages/exercises';
 import ExerciseDetail from '@/pages/exercise-detail';
 import NewToGym from '@/pages/new-to-gym';
 import Workouts from '@/pages/workouts';
+import WorkoutExercisePage from '@/pages/workout-exercise';
 import About from '@/pages/about';
 import Coach from '@/pages/coach';
 import { CoachWidget } from '@/components/coach/coach-widget';
@@ -147,6 +148,13 @@ function KeyedCoach() {
   return <Coach key={user?.id ?? 'guest'} />;
 }
 
+function KeyedWorkoutExercise() {
+  const { user, isLoaded } = useUser();
+  return isLoaded
+    ? <WorkoutExercisePage key={user?.id ?? 'guest'} />
+    : <div className="mx-auto h-64 max-w-3xl animate-pulse px-5 py-10" aria-busy="true" />;
+}
+
 function KeyedCoachWidget() {
   const { user, isLoaded } = useUser();
   return isLoaded ? <CoachWidget key={user?.id ?? 'guest'} /> : null;
@@ -166,6 +174,7 @@ function Router() {
         <Route path="/exercises/:slug" component={ExerciseDetail} />
         <Route path="/new-to-gym" component={NewToGym} />
         <Route path="/workouts" component={KeyedWorkouts} />
+        <Route path="/workouts/:workoutId/exercises/:exerciseId" component={KeyedWorkoutExercise} />
         <Route path="/coach" component={KeyedCoach} />
         <Route path="/about" component={About} />
         <Route component={NotFound} />

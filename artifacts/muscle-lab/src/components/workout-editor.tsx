@@ -5,6 +5,7 @@ import type { Workout, WorkoutExercise } from '@/lib/workout-storage';
 import { newWorkoutExercise } from '@/lib/workout-storage';
 import { ExercisePicker } from '@/components/exercise-picker';
 import { guardNav } from '@/lib/unsaved-guard';
+import { workoutExerciseHref } from '@/lib/exercise-links';
 
 const field = 'w-full rounded-xl border border-[#232a16]/30 bg-white/60 px-3 py-2 text-sm text-[#232a16] placeholder:text-[#232a16]/50';
 
@@ -58,13 +59,15 @@ export function WorkoutEditor({ draft, isSaved, dirty, error, success, saving = 
         </p>
       ) : (
         <ol className="mt-3 space-y-3">
-          {draft.exercises.map((x, i) => (
+          {draft.exercises.map((x, i) => {
+            const href = workoutExerciseHref(draft.id, x);
+            return (
             <li key={x.id} className="rounded-2xl border border-[#232a16]/20 bg-white/50 p-4" data-testid={`item-exercise-${x.id}`}>
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <span className="font-mono text-xs text-[#232a16]/60">{String(i + 1).padStart(2, '0')}</span>
                   <p className="font-display text-lg font-bold leading-tight">
-                    {x.exerciseSlug ? <Link href={`/exercises/${x.exerciseSlug}`} onClick={(e) => guardNav(e, `/exercises/${x.exerciseSlug}`)} className="underline decoration-[#232a16]/30 underline-offset-2 hover:decoration-[#232a16]">{x.name}</Link> : x.name}
+                    <Link href={href} onClick={(e) => guardNav(e, href)} className="underline decoration-[#232a16]/30 underline-offset-2 hover:decoration-[#232a16]" data-testid={`link-workout-exercise-${x.id}`}>{x.name}</Link>
                   </p>
                 </div>
                 <div className="flex shrink-0">
@@ -86,7 +89,8 @@ export function WorkoutEditor({ draft, isSaved, dirty, error, success, saving = 
               <label className="mt-3 block text-xs font-semibold" htmlFor={`note-${x.id}`}>Exercise note</label>
               <textarea id={`note-${x.id}`} rows={2} maxLength={10000} className={`${field} mt-1`} value={x.notes} placeholder="Seat height, weight used, cues..." onChange={(e) => setItem(x.id, { notes: e.target.value })} data-testid={`input-note-${x.id}`} />
             </li>
-          ))}
+            );
+          })}
         </ol>
       )}
 

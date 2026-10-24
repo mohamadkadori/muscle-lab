@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { Link } from 'wouter';
 import { Check, Loader2 } from 'lucide-react';
 import type { CoachRoutine } from '@workspace/api-client-react';
-import { EXERCISES } from '@/data/exercises';
+import { resolveExercise } from '@/lib/exercise-links';
 import { newWorkout, newWorkoutExercise, type Workout } from '@/lib/workout-storage';
 import { useWorkoutRepository, workoutError } from '@/hooks/use-workout-repository';
 
@@ -13,7 +13,7 @@ function buildWorkout(plan: CoachRoutine): Workout {
   w.name = plan.name.trim().slice(0, 120) || 'Coach routine';
   w.notes = plan.notes ?? '';
   w.exercises = plan.exercises.map((e) => {
-    const match = EXERCISES.find((x) => x.name.toLowerCase() === e.name.trim().toLowerCase());
+    const match = resolveExercise(e.name);
     const ex = newWorkoutExercise(e.name.trim().slice(0, 200), match ? match.slug : null);
     ex.sets = Math.min(99, Math.max(1, Math.round(e.sets) || 3));
     ex.reps = e.reps.trim().slice(0, 100) || '8-12';
