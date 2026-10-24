@@ -13,10 +13,10 @@ export default function Explorer() {
       <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="lg:pt-10">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/70">Visual field guide</p>
-          <h1 className="mt-4 font-display text-5xl font-extrabold leading-[0.95] text-[#232a16] md:text-7xl">
+          <h1 className="mt-4 font-display text-5xl font-extrabold leading-[0.95] md:text-7xl text-card">
             Know exactly what you train.
           </h1>
-          <p className="mt-6 max-w-md text-lg text-card">
+          <p className="mt-6 max-w-md text-lg text-foreground">
             Every muscle on the body map is a door. Point at one, tap it, and learn its job, its parts and the exercises that work it.
           </p>
           <div className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#232a16] px-4 py-2 text-sm text-[#f4f2e9]">
