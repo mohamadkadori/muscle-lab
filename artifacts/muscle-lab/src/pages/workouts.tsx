@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'wouter';
-import { Dumbbell, Info, Plus, Trash2 } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
+import { Cloud, Dumbbell, Info, Plus, RefreshCw, Trash2 } from 'lucide-react';
 import { useMeta } from '@/hooks/use-meta';
-import { deleteWorkout, loadWorkouts, newWorkout, saveWorkout, type Workout } from '@/lib/workout-storage';
-import { setUnsavedGuard } from '@/lib/unsaved-guard';
+import { newWorkout, type Workout } from '@/lib/workout-storage';
+import { guardNav, setUnsavedGuard } from '@/lib/unsaved-guard';
+import { useWorkoutRepository, workoutError as msg } from '@/hooks/use-workout-repository';
 import { WorkoutEditor } from '@/components/workout-editor';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
@@ -11,19 +12,13 @@ import {
 
 type Pending = { type: 'select'; id: string } | { type: 'new' } | { type: 'close' } | { type: 'nav'; href: string };
 
-const msg = (e: unknown) => (e instanceof Error && e.message ? e.message : 'Something went wrong. Please try again.');
 const snap = (w: Workout | null) => (w ? JSON.stringify({ n: w.name, o: w.notes, e: w.exercises }) : '');
 
-function safeLoad(): { list: Workout[]; error: string | null } {
-  try { return { list: loadWorkouts(), error: null }; } catch (e) { return { list: [], error: msg(e) }; }
-}
-
 export default function Workouts() {
-  useMeta('My workouts | muscleLab', 'Build your own routines from the muscleLab exercise library and keep training notes, saved privately in this browser.');
+  useMeta('My workouts | muscleLab', 'Build routines and keep training notes. Sign in to save privately to your account and open them on any device.');
   const [, navigate] = useLocation();
-  const [init] = useState(safeLoad);
-  const [list, setList] = useState<Workout[]>(init.list);
-  const [loadError, setLoadError] = useState<string | null>(init.error);
+  const repository = useWorkoutRepository();
+  const { list, loadError, cloud, loading } = repository;
   const [draft, setDraft] = useState<Workout | null>(null);
   const [base, setBase] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -31,19 +26,25 @@ export default function Workouts() {
   const [pending, setPending] = useState<Pending | null>(null);
   const [deleting, setDeleting] = useState<Workout | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [isSaved, setIsSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [copying, setCopying] = useState(false);
+  const [copyDialog, setCopyDialog] = useState(false);
+  const [copyMessage, setCopyMessage] = useState<string | null>(null);
+  const [copyError, setCopyError] = useState<string | null>(null);
+  const [refreshError, setRefreshError] = useState<string | null>(null);
 
   const dirty = draft !== null && snap(draft) !== base;
-  const isSaved = draft !== null && list.some((w) => w.id === draft.id);
 
   const request = useCallback((p: Pending) => setPending(p), []);
 
   useEffect(() => {
-    setUnsavedGuard(dirty, (href) => request({ type: 'nav', href }));
+    setUnsavedGuard(dirty || saving || copying, (href) => { if (!saving && !copying) request({ type: 'nav', href }); });
     return () => setUnsavedGuard(false, null);
-  }, [dirty, request]);
+  }, [dirty, saving, copying, request]);
 
   useEffect(() => {
-    if (!dirty) return;
+    if (!dirty && !saving && !copying) return;
     const h = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ''; };
     const editorUrl = window.location.href;
     const protectBack = (e: PopStateEvent) => {
@@ -59,24 +60,25 @@ export default function Workouts() {
       window.removeEventListener('beforeunload', h);
       window.removeEventListener('popstate', protectBack, true);
     };
-  }, [dirty]);
+  }, [dirty, saving, copying]);
 
   const open = (w: Workout | null) => {
     setDraft(w ? structuredClone(w) : null);
+    setIsSaved(Boolean(w));
     setBase(snap(w));
     setError(null);
     setSuccess(null);
   };
   const run = (p: Pending) => {
-    if (p.type === 'new') { const w = newWorkout(); setDraft(w); setBase(snap(w)); setError(null); setSuccess(null); }
+    if (p.type === 'new') { const w = newWorkout(); setIsSaved(false); setDraft(w); setBase(snap(w)); setError(null); setSuccess(null); }
     else if (p.type === 'select') open(list.find((w) => w.id === p.id) ?? null);
     else if (p.type === 'close') open(null);
     else { setUnsavedGuard(false, null); navigate(p.href); }
   };
-  const attempt = (p: Pending) => (dirty ? request(p) : run(p));
+  const attempt = (p: Pending) => { if (!saving) { if (dirty) request(p); else run(p); } };
 
-  const save = () => {
-    if (!draft) return;
+  const save = async () => {
+    if (!draft || saving) return;
     setSuccess(null);
     const name = draft.name.trim();
     if (!name) return setError('Give your routine a name before saving.');
@@ -90,39 +92,56 @@ export default function Workouts() {
       if (!x.reps.trim()) return setError(`Add a rep target for ${x.name}, like 8-12.`);
     }
     const toSave: Workout = { ...draft, name, exercises: draft.exercises.map((x) => ({ ...x, reps: x.reps.trim() })) };
+    setSaving(true);
     try {
-      saveWorkout(toSave);
-    } catch (e) {
-      return setError(msg(e));
-    }
-    const r = safeLoad();
-    if (r.error) {
-      setLoadError(r.error);
-      setError('The save completed, but saved workouts could not be reloaded. Keep your draft open and try again.');
-      return;
-    }
-    setList(r.list);
-    setLoadError(r.error);
-    const saved = r.list.find((w) => w.id === toSave.id) ?? toSave;
-    setDraft(structuredClone(saved));
-    setBase(snap(saved));
-    setError(null);
-    setSuccess(`Saved "${saved.name}" in this browser.`);
+      const saved = await repository.save(toSave, !isSaved);
+      setDraft(structuredClone(saved));
+      setBase(snap(saved));
+      setIsSaved(true);
+      setError(null);
+      setSuccess(`Saved "${saved.name}" ${cloud ? 'to your account. Available on your other devices.' : 'in this browser.'}`);
+    } catch (e) { setError(msg(e)); }
+    finally { setSaving(false); }
   };
 
-  const confirmDelete = () => {
-    if (!deleting) return;
+  const confirmDelete = async () => {
+    if (!deleting || saving) return;
+    setSaving(true);
     try {
-      deleteWorkout(deleting.id);
+      await repository.remove(deleting);
+      if (draft?.id === deleting.id) open(null);
+      setDeleting(null);
+      setDeleteError(null);
     } catch (e) {
-      return setDeleteError(msg(e));
+      setDeleteError(msg(e));
+    } finally { setSaving(false); }
+  };
+
+  // New data from another device updates an untouched editor, never a dirty draft.
+  useEffect(() => {
+    if (!isSaved || dirty || saving || loading || loadError) return;
+    const current = draft && list.find((w) => w.id === draft.id);
+    if (current) {
+      setDraft(structuredClone(current));
+      setBase(snap(current));
+    } else if (draft) {
+      open(null);
     }
-    const r = safeLoad();
-    setList(r.list);
-    setLoadError(r.error);
-    if (draft?.id === deleting.id) open(null);
-    setDeleting(null);
-    setDeleteError(null);
+  }, [list]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const refresh = async () => {
+    setRefreshError(null);
+    try { await repository.refresh(); } catch (e) { setRefreshError(msg(e)); }
+  };
+  const copy = async () => {
+    setCopying(true);
+    setCopyError(null);
+    try {
+      const result = await repository.copyLocal();
+      setCopyMessage(`Copied ${result.imported} routine${result.imported === 1 ? '' : 's'} to your account. ${result.skipped} already in your account and left unchanged. Local copies are still on this device.`);
+      setCopyDialog(false);
+    } catch (e) { setCopyError(msg(e)); }
+    finally { setCopying(false); }
   };
 
   const sorted = useMemo(() => [...list].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)), [list]);
@@ -134,23 +153,46 @@ export default function Workouts() {
       <p className="mt-4 max-w-2xl text-lg text-[#232a16]/85">Build named routines from the exercise library and jot down what worked.</p>
 
       <div className="mt-6 flex max-w-2xl gap-3 rounded-2xl bg-[#232a16] p-4 text-sm text-[#f4f2e9]" data-testid="text-local-notice">
-        <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#ecf39e]" aria-hidden />
-        <p>Workouts are stored only in this browser on this device. They do not sync across devices, and clearing your browser data will delete them.</p>
+        {cloud ? <Cloud className="mt-0.5 h-4 w-4 shrink-0 text-[#ecf39e]" aria-hidden /> : <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#ecf39e]" aria-hidden />}
+        <div>
+          {cloud ? (
+            <p data-testid="text-cloud-notice">Your routines and notes are saved privately to your account. Sign in to the same account on any device to open them. Save your edits before switching devices.</p>
+          ) : (
+            <>
+              <p>Guest routines are stored only in this browser and can be lost if browser data is cleared. Sign in to save routines to your account and access them on any device.</p>
+              <div className="mt-3 flex flex-wrap gap-4">
+                <Link href="/sign-in" onClick={(e) => guardNav(e, '/sign-in')} className="font-semibold text-[#ecf39e] underline" data-testid="link-workout-sign-in">Sign in</Link>
+                <Link href="/sign-up" onClick={(e) => guardNav(e, '/sign-up')} className="font-semibold text-[#ecf39e] underline">Create account</Link>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
-      {loadError && <p role="alert" className="mt-4 rounded-xl bg-[#9a3b2b] p-3 text-sm text-[#f4f2e9]" data-testid="text-load-error">{loadError}</p>}
+      {cloud && repository.localCopies.length > 0 && (
+        <div className="mt-4 max-w-2xl rounded-2xl bg-[#ecf39e] p-4 text-sm">
+          <p>You have {repository.localCopies.length} browser-saved routine{repository.localCopies.length === 1 ? '' : 's'} on this device. They are separate from your account until you copy them.</p>
+          <button type="button" disabled={copying || saving} onClick={() => { setCopyError(null); setCopyDialog(true); }} className="mt-3 rounded-full bg-[#232a16] px-4 py-2 font-semibold text-[#f4f2e9] disabled:opacity-50" data-testid="button-copy-local">Copy browser routines to my account</button>
+          {copyMessage && <p className="mt-3" role="status">{copyMessage}</p>}
+        </div>
+      )}
+      {cloud && repository.localError && <p role="alert" className="mt-4 text-sm">Browser routines could not be read: {repository.localError} Your account routines are separate and unaffected.</p>}
+      {(loadError || refreshError) && <p role="alert" className="mt-4 rounded-xl bg-[#9a3b2b] p-3 text-sm text-[#f4f2e9]" data-testid="text-load-error">{refreshError || loadError}</p>}
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[320px_1fr]">
         <section aria-labelledby="saved-heading" className="self-start rounded-3xl bg-[#f4f2e9] p-5">
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 id="saved-heading" className="font-display text-xl font-bold">Saved routines</h2>
-            <button type="button" onClick={() => attempt({ type: 'new' })} className="flex items-center gap-1.5 rounded-full bg-[#232a16] px-4 py-2 text-sm font-semibold text-[#f4f2e9]" data-testid="button-new-workout"><Plus className="h-4 w-4" aria-hidden />New</button>
+            <div className="flex items-center gap-1">
+              <button type="button" onClick={refresh} disabled={saving || repository.fetching} aria-label="Refresh saved routines" title="Refresh saved routines" className="rounded-full p-2 disabled:opacity-40" data-testid="button-refresh-workouts"><RefreshCw className={`h-4 w-4 ${repository.fetching ? 'animate-spin' : ''}`} /></button>
+              <button type="button" disabled={saving || loading} onClick={() => attempt({ type: 'new' })} className="flex items-center gap-1.5 rounded-full bg-[#232a16] px-4 py-2 text-sm font-semibold text-[#f4f2e9] disabled:opacity-40" data-testid="button-new-workout"><Plus className="h-4 w-4" aria-hidden />New</button>
+            </div>
           </div>
-          {sorted.length === 0 ? (
+          {loading ? <p className="py-8 text-sm" role="status">Loading your account routines…</p> : sorted.length === 0 ? (
             <div className="mt-4 rounded-2xl border border-dashed border-[#232a16]/40 p-6 text-center" data-testid="text-empty-list">
               <Dumbbell className="mx-auto h-8 w-8 text-[#232a16]/60" aria-hidden />
-              <p className="mt-2 font-display font-bold">Nothing saved yet</p>
-              <p className="mt-1 text-sm text-[#232a16]/75">Start a routine and it will show up here.</p>
+              <p className="mt-2 font-display font-bold">{loadError ? 'Saved routines unavailable' : 'Nothing saved yet'}</p>
+              <p className="mt-1 text-sm text-[#232a16]/75">{loadError ? 'Try refreshing. Your saved data has not been cleared.' : 'Start a routine and it will show up here.'}</p>
             </div>
           ) : (
             <ul className="mt-4 space-y-2">
@@ -166,7 +208,7 @@ export default function Workouts() {
                     <span className="block truncate font-display font-bold">{w.name}</span>
                     <span className="block text-xs text-[#232a16]/70">{w.exercises.length === 0 ? 'Notes only' : `${w.exercises.length} exercise${w.exercises.length === 1 ? '' : 's'}`} · {new Date(w.updatedAt).toLocaleDateString()}</span>
                   </button>
-                  <button type="button" onClick={() => { setDeleteError(null); setDeleting(w); }} className="rounded-xl px-3 text-[#9a3b2b] hover:bg-[#9a3b2b]/10" aria-label={`Delete ${w.name}`} data-testid={`button-delete-${w.id}`}><Trash2 className="h-4 w-4" /></button>
+                  <button type="button" disabled={saving} onClick={() => { setDeleteError(null); setDeleting(w); }} className="rounded-xl px-3 text-[#9a3b2b] hover:bg-[#9a3b2b]/10 disabled:opacity-40" aria-label={`Delete ${w.name}`} data-testid={`button-delete-${w.id}`}><Trash2 className="h-4 w-4" /></button>
                 </li>
               ))}
             </ul>
@@ -175,12 +217,12 @@ export default function Workouts() {
 
         <section aria-label="Routine editor">
           {draft ? (
-            <WorkoutEditor draft={draft} isSaved={isSaved} dirty={dirty} error={error} success={success} onChange={(w) => { setDraft(w); setSuccess(null); }} onSave={save} onClose={() => attempt({ type: 'close' })} onDelete={() => { const w = list.find((x) => x.id === draft.id); if (w) { setDeleteError(null); setDeleting(w); } }} />
+            <WorkoutEditor draft={draft} saving={saving} isSaved={isSaved} dirty={dirty} error={error} success={success} onChange={(w) => { setDraft(w); setSuccess(null); }} onSave={save} onClose={() => attempt({ type: 'close' })} onDelete={() => { const w = list.find((x) => x.id === draft.id); if (w) { setDeleteError(null); setDeleting(w); } }} />
           ) : (
             <div className="rounded-3xl border border-[#232a16]/30 p-8 md:p-12" data-testid="text-editor-empty">
               <h2 className="font-display text-2xl font-bold">Pick a routine or start a new one</h2>
               <p className="mt-2 max-w-md text-[#232a16]/85">Name it, add exercises, set your sets and reps, and leave notes for next time.</p>
-              <button type="button" onClick={() => attempt({ type: 'new' })} className="mt-5 rounded-full bg-[#232a16] px-5 py-2.5 text-sm font-semibold text-[#f4f2e9]" data-testid="button-start-workout">Start a routine</button>
+              <button type="button" disabled={loading || saving} onClick={() => attempt({ type: 'new' })} className="mt-5 rounded-full bg-[#232a16] px-5 py-2.5 text-sm font-semibold text-[#f4f2e9] disabled:opacity-40" data-testid="button-start-workout">Start a routine</button>
             </div>
           )}
         </section>
@@ -203,12 +245,25 @@ export default function Workouts() {
         <AlertDialogContent className="bg-[#f4f2e9] text-[#232a16]">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-display">Delete "{deleting?.name}"?</AlertDialogTitle>
-            <AlertDialogDescription>This removes the routine and its notes from this browser. It cannot be undone.</AlertDialogDescription>
+            <AlertDialogDescription>This removes the routine and its notes {cloud ? 'from your account on every device' : 'from this browser'}. It cannot be undone.</AlertDialogDescription>
           </AlertDialogHeader>
           {deleteError && <p role="alert" className="rounded-xl bg-[#9a3b2b] p-3 text-sm text-[#f4f2e9]">{deleteError}</p>}
           <AlertDialogFooter>
-            <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-[#9a3b2b] text-[#f4f2e9]" data-testid="button-confirm-delete" onClick={(e) => { e.preventDefault(); confirmDelete(); }}>Delete routine</AlertDialogAction>
+            <AlertDialogCancel disabled={saving} data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
+            <AlertDialogAction disabled={saving} className="bg-[#9a3b2b] text-[#f4f2e9]" data-testid="button-confirm-delete" onClick={(e) => { e.preventDefault(); void confirmDelete(); }}>{saving ? 'Deleting…' : 'Delete routine'}</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <AlertDialog open={copyDialog} onOpenChange={(value) => { if (!copying) setCopyDialog(value); }}>
+        <AlertDialogContent className="bg-[#f4f2e9] text-[#232a16]">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Copy browser routines to this account?</AlertDialogTitle>
+            <AlertDialogDescription>Your local routines and notes will be copied into the account you are currently signed into. Existing account routines are not overwritten. Local originals will stay in this browser.</AlertDialogDescription>
+          </AlertDialogHeader>
+          {copyError && <p role="alert" className="text-sm text-[#9a3b2b]">{copyError}</p>}
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={copying}>Cancel</AlertDialogCancel>
+            <AlertDialogAction disabled={copying} onClick={(e) => { e.preventDefault(); void copy(); }} data-testid="button-confirm-copy">{copying ? 'Copying…' : 'Copy routines'}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

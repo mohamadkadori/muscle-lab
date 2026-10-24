@@ -53,7 +53,7 @@ export default function MusclePage() {
   return (
     <div className="mx-auto max-w-7xl px-5 pt-2 md:px-8 md:pt-4">
       <div className="flex h-11 items-center rounded-xl bg-[#171812] px-4">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-[#f4f2e9] transition-colors hover:text-[#ecf39e]" data-testid="link-back-explorer">
+        <Link href="/explorer" className="inline-flex items-center gap-2 text-sm font-semibold text-[#f4f2e9] transition-colors hover:text-[#ecf39e]" data-testid="link-back-explorer">
           <ArrowLeft className="h-4 w-4" /> Anatomy explorer
         </Link>
       </div>

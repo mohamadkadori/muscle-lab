@@ -22,7 +22,7 @@ export default function About() {
         <div className="rounded-3xl border border-[#232a16]/30 p-8 md:col-span-2">
           <h2 className="font-display text-2xl font-bold">A note on the content</h2>
           <p className="mt-3 max-w-2xl text-[#232a16]/85">The exercises you see today are demo entries used to shape the experience. A verified exercise library will replace them. muscleLab is educational and not medical advice; talk to a professional if you have an injury.</p>
-          <Link href="/" className="mt-6 inline-block rounded-full bg-[#232a16] px-5 py-2.5 text-sm font-semibold text-[#f4f2e9]" data-testid="link-about-explorer">
+          <Link href="/explorer" className="mt-6 inline-block rounded-full bg-[#232a16] px-5 py-2.5 text-sm font-semibold text-[#f4f2e9]" data-testid="link-about-explorer">
             Try the explorer
           </Link>
         </div>

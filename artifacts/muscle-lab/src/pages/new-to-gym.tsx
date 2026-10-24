@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { useMeta } from '@/hooks/use-meta';
 
 const STEPS = [
-  { t: 'Use the map to find exercises', d: 'Choose a muscle to see what it does, then pick a training region to find exercises that work it.', link: '/', cta: 'Open explorer' },
+  { t: 'Use the map to find exercises', d: 'Choose a muscle to see what it does, then pick a training region to find exercises that work it.', link: '/explorer', cta: 'Open explorer' },
   { t: 'Pick machines and dumbbells first', d: 'They guide the path of movement while you learn. Barbells can wait until the pattern feels natural.', link: '/exercises', cta: 'Browse exercises' },
   { t: 'Train each muscle about twice a week', d: 'Two or three sets of a few exercises per muscle, with a day or two between sessions, is plenty at the start.' },
   { t: 'Leave two reps in the tank', d: 'Finish each set feeling you could have done two more good reps. Form first, weight second.' },

@@ -21,7 +21,7 @@ interface Props {
   onDelete: () => void;
 }
 
-export function WorkoutEditor({ draft, isSaved, dirty, error, success, onChange, onSave, onClose, onDelete }: Props) {
+export function WorkoutEditor({ draft, isSaved, dirty, error, success, saving = false, onChange, onSave, onClose, onDelete }: Props) {
   const [picking, setPicking] = useState(false);
   const setItem = (id: string, patch: Partial<WorkoutExercise>) =>
     onChange({ ...draft, exercises: draft.exercises.map((x) => (x.id === id ? { ...x, ...patch } : x)) });
@@ -35,6 +35,7 @@ export function WorkoutEditor({ draft, isSaved, dirty, error, success, onChange,
 
   return (
     <form onSubmit={(e) => { e.preventDefault(); onSave(); }} className="rounded-3xl bg-[#f4f2e9] p-5 md:p-7" data-testid="form-workout" noValidate>
+      <fieldset disabled={saving} aria-busy={saving} className="min-w-0 disabled:opacity-70">
       <div className="flex items-start justify-between gap-3">
         <h2 className="font-display text-2xl font-extrabold">{isSaved ? 'Edit routine' : 'New routine'}</h2>
         <button type="button" onClick={onClose} className="rounded-full p-2 hover:bg-[#232a16]/10" aria-label="Close editor" data-testid="button-close-editor"><X className="h-5 w-5" /></button>
@@ -95,12 +96,13 @@ export function WorkoutEditor({ draft, isSaved, dirty, error, success, onChange,
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        <button type="submit" className="flex items-center gap-2 rounded-full bg-[#232a16] px-6 py-3 text-sm font-semibold text-[#f4f2e9]" data-testid="button-save-workout"><Save className="h-4 w-4" aria-hidden />Save routine</button>
+        <button type="submit" className="flex items-center gap-2 rounded-full bg-[#232a16] px-6 py-3 text-sm font-semibold text-[#f4f2e9]" data-testid="button-save-workout"><Save className="h-4 w-4" aria-hidden />{saving ? 'Saving…' : 'Save routine'}</button>
         {dirty && <span className="text-sm font-semibold text-[#232a16]/80" data-testid="text-unsaved">Unsaved changes</span>}
         {isSaved && <button type="button" onClick={onDelete} className="ml-auto flex items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold text-[#9a3b2b] hover:bg-[#9a3b2b]/10" data-testid="button-delete-workout"><Trash2 className="h-4 w-4" aria-hidden />Delete</button>}
       </div>
 
       <ExercisePicker open={picking} onOpenChange={setPicking} onPick={(e) => { onChange({ ...draft, exercises: [...draft.exercises, newWorkoutExercise(e.name, e.slug)] }); setPicking(false); }} />
+      </fieldset>
     </form>
   );
 }

@@ -30,7 +30,7 @@ _Populate as you build — non-obvious choices a reader couldn't infer from the 
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+muscleLab combines a clickable anatomy map, sample exercise library, beginner guidance, and a personal workout builder with training notes. Signed-in workouts are privately saved to an account for use across devices. Guest routines remain browser-local.
 
 ## User preferences
 
@@ -39,7 +39,7 @@ _Describe the high-level user-facing capabilities of this app once they exist._
 - Hovering a muscle shows only its name and “Go to muscle page”; clicking opens the muscle information and exercises on a separate page.
 - On muscle pages, highlight the whole muscle initially; hovering its diagram highlights a submuscle, and clicking it reveals deeper information and matching exercises. Keep region buttons in sync.
 - Exercises are dummy content for now. The user will supply the exercise content to replace them.
-- Keep muscleLab at the left of the top navigation, with All exercises, New to gym?, and About us at the right.
+- Keep muscleLab at the left of the top navigation, with All exercises, New to gym?, My workouts, and About us at the right.
 
 ## Gotchas
 

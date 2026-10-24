@@ -1,10 +1,10 @@
 ---
-name: Workout storage scope
-description: Why personal workout plans use browser storage and how to approach future synchronization.
+name: Workout account migration
+description: Privacy and preservation rules when copying browser routines into signed-in cloud accounts.
 ---
 
-The workout builder intentionally saves to the current browser rather than introducing accounts or server-side identity.
+Never automatically attach guest browser routines to whichever account signs in. Copying local routines into an account requires an explicit user action and must leave the browser originals intact.
 
-**Why:** The request was to create routines and write notes in an existing app without accounts. Adding authentication and cloud synchronization was outside that request, so the browser-local limitation is stated in the page.
+**Why:** Cross-device access was requested after browser-local routines had shipped. Existing notes must not be lost, and automatically importing them on a shared device could expose someone else's routines to the wrong account.
 
-**How to apply:** Do not describe these routines as cloud-saved or cross-device. If synchronization or accounts are added later, preserve existing local routines and offer a migration or backup rather than silently replacing their storage.
+**How to apply:** Clearly distinguish guest browser storage from private account storage. Repeated copies must not overwrite cloud edits. Keep account data isolated when signing out or switching accounts, and preserve unsaved drafts when a save fails or conflicts with another device.

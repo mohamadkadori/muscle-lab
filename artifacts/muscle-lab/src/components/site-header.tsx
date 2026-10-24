@@ -3,13 +3,14 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { guardNav } from '@/lib/unsaved-guard';
+import { DesktopAccount, MobileAccount } from '@/components/account-controls';
 
 const NAV = [
   { href: '/exercises', label: 'All exercises', id: 'exercises' },
   { href: '/new-to-gym', label: 'New to gym?', id: 'new' },
   { href: '/workouts', label: 'My workouts', id: 'workouts' },
   { href: '/about', label: 'About us', id: 'about' },
-  { href: '/', label: 'Anatomy explorer', id: 'explorer' },
+  { href: '/explorer', label: 'Anatomy explorer', id: 'explorer' },
 ];
 
 export function Logo() {
@@ -23,7 +24,7 @@ export function Logo() {
 export function SiteHeader() {
   const [loc] = useLocation();
   const [open, setOpen] = useState(false);
-  const isActive = (href: string) => (href === '/' ? loc === '/' || loc.startsWith('/muscles') : loc.startsWith(href));
+  const isActive = (href: string) => (href === '/explorer' ? loc === '/' || loc.startsWith('/explorer') || loc.startsWith('/muscles') : loc.startsWith(href));
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#232a16]/10 bg-[#f4f2e9]/95 backdrop-blur">
@@ -31,7 +32,7 @@ export function SiteHeader() {
         <Link href="/" className="rounded-lg" data-testid="link-brand" onClick={(e) => { if (guardNav(e, '/')) return; setOpen(false); }}>
           <Logo />
         </Link>
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+        <nav className="hidden min-w-0 items-center gap-0.5 xl:flex" aria-label="Main">
           {NAV.map((n) => (
             <Link
               key={n.id}
@@ -53,8 +54,9 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+        <DesktopAccount />
         <button
-          className="rounded-full p-2 text-[#232a16] lg:hidden"
+          className="rounded-full p-2 text-[#232a16] xl:hidden"
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           onClick={() => setOpen((o) => !o)}
@@ -69,7 +71,7 @@ export function SiteHeader() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-[#232a16]/15 lg:hidden"
+            className="overflow-hidden border-t border-[#232a16]/15 xl:hidden"
             aria-label="Mobile"
           >
             <div className="flex flex-col gap-1 bg-[#f4f2e9] p-4">
@@ -86,6 +88,7 @@ export function SiteHeader() {
                   {n.label}
                 </Link>
               ))}
+              <MobileAccount onNavigate={() => setOpen(false)} />
             </div>
           </motion.nav>
         )}
