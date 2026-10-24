@@ -31,7 +31,7 @@ export default function Explorer() {
                   key={m.slug}
                   href={`/muscles/${m.slug}`}
                   data-testid={`link-muscle-chip-${m.slug}`}
-                  className="rounded-full border border-[#232a16]/30 bg-white px-3.5 py-1.5 text-sm font-semibold text-[#232a16] transition-colors hover:bg-[#232a16] hover:text-[#ecf39e]"
+                  className="rounded-full border border-[#232a16]/30 bg-[#f4f2e9] px-3.5 py-1.5 text-sm font-semibold text-[#232a16] transition-colors hover:bg-[#232a16] hover:text-[#ecf39e]"
                 >
                   {m.name}
                 </Link>
