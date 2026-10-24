@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { guardNav } from '@/lib/unsaved-guard';
 
 const NAV = [
   { href: '/exercises', label: 'All exercises', id: 'exercises' },
   { href: '/new-to-gym', label: 'New to gym?', id: 'new' },
+  { href: '/workouts', label: 'My workouts', id: 'workouts' },
   { href: '/about', label: 'About us', id: 'about' },
   { href: '/', label: 'Anatomy explorer', id: 'explorer' },
 ];
@@ -26,14 +28,15 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-[#232a16]/10 bg-[#f4f2e9]/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
-        <Link href="/" className="rounded-lg" data-testid="link-brand" onClick={() => setOpen(false)}>
+        <Link href="/" className="rounded-lg" data-testid="link-brand" onClick={(e) => { if (guardNav(e, '/')) return; setOpen(false); }}>
           <Logo />
         </Link>
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
           {NAV.map((n) => (
             <Link
               key={n.id}
               href={n.href}
+              onClick={(e) => guardNav(e, n.href)}
               data-testid={`link-nav-${n.id}`}
               className={`relative rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                 isActive(n.href) ? 'text-[#f4f2e9]' : 'text-[#232a16] hover:bg-[#232a16]/10'
@@ -51,7 +54,7 @@ export function SiteHeader() {
           ))}
         </nav>
         <button
-          className="rounded-full p-2 text-[#232a16] md:hidden"
+          className="rounded-full p-2 text-[#232a16] lg:hidden"
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           onClick={() => setOpen((o) => !o)}
@@ -66,7 +69,7 @@ export function SiteHeader() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-[#232a16]/15 md:hidden"
+            className="overflow-hidden border-t border-[#232a16]/15 lg:hidden"
             aria-label="Mobile"
           >
             <div className="flex flex-col gap-1 bg-[#f4f2e9] p-4">
@@ -74,7 +77,7 @@ export function SiteHeader() {
                 <Link
                   key={n.id}
                   href={n.href}
-                  onClick={() => setOpen(false)}
+                  onClick={(e) => { if (guardNav(e, n.href)) return; setOpen(false); }}
                   data-testid={`link-mobile-${n.id}`}
                   className={`rounded-xl px-4 py-3 font-display text-lg font-bold ${
                     isActive(n.href) ? 'bg-[#232a16] text-[#f4f2e9]' : 'text-[#232a16]'
@@ -105,7 +108,7 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {NAV.map((n) => (
-            <Link key={n.id} href={n.href} className="text-[#f4f2e9]/80 hover:text-[#ecf39e]" data-testid={`link-footer-${n.id}`}>
+            <Link key={n.id} href={n.href} onClick={(e) => guardNav(e, n.href)} className="text-[#f4f2e9]/80 hover:text-[#ecf39e]" data-testid={`link-footer-${n.id}`}>
               {n.label}
             </Link>
           ))}

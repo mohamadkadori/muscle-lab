@@ -1,0 +1,1 @@
+- [Workout storage scope](workout-storage-scope.md) — personal routines are browser-local for now; make the limitation clear and preserve them if adding accounts later.

@@ -10,6 +10,7 @@ import MusclePage from '@/pages/muscle-page';
 import Exercises from '@/pages/exercises';
 import ExerciseDetail from '@/pages/exercise-detail';
 import NewToGym from '@/pages/new-to-gym';
+import Workouts from '@/pages/workouts';
 import About from '@/pages/about';
 import {
   Route,
@@ -29,6 +30,7 @@ function Router() {
         <Route path="/exercises" component={Exercises} />
         <Route path="/exercises/:slug" component={ExerciseDetail} />
         <Route path="/new-to-gym" component={NewToGym} />
+        <Route path="/workouts" component={Workouts} />
         <Route path="/about" component={About} />
         <Route component={NotFound} />
       </Switch>
