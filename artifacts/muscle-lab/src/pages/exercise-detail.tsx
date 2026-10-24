@@ -5,6 +5,8 @@ import { AnatomyFigure } from '@/components/anatomy-figure';
 import { DiagramViewer } from '@/components/diagram-viewer';
 import { Difficulty, ExerciseCard } from '@/components/exercise-card';
 import { EXERCISES, getExercise } from '@/data/exercises';
+import { EXERCISE_VIDEOS } from '@/data/exercise-videos';
+import { ExerciseVideo } from '@/components/exercise-video';
 import { getMuscle } from '@/data/muscles';
 import { useMeta } from '@/hooks/use-meta';
 import NotFound from '@/pages/not-found';
@@ -18,6 +20,7 @@ export default function ExerciseDetail() {
   const regions = muscle.regions.filter((r) => ex.regions.includes(r.id));
   const view = muscle.views[0];
   const related = EXERCISES.filter((e) => e.muscle === ex.muscle && e.slug !== ex.slug).slice(0, 3);
+  const video = EXERCISE_VIDEOS[ex.slug];
 
   return (
     <div className="mx-auto max-w-7xl px-5 pt-8 md:px-8 md:pt-12">
@@ -54,6 +57,8 @@ export default function ExerciseDetail() {
               <div className="mt-1"><Difficulty level={ex.difficulty} /></div>
             </div>
           </div>
+
+          {video && <ExerciseVideo key={ex.slug} video={video} exerciseName={ex.name} />}
 
           <h2 className="mt-12 font-display text-2xl font-bold">How to do it</h2>
           <ol className="mt-4 space-y-3">
