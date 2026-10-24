@@ -51,11 +51,13 @@ export default function MusclePage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-5 pt-8 md:px-8 md:pt-12">
-      <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-[#232a16] hover:underline" data-testid="link-back-explorer">
-        <ArrowLeft className="h-4 w-4" /> Anatomy explorer
-      </Link>
-      <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-16">
+    <div className="mx-auto max-w-7xl px-5 pt-2 md:px-8 md:pt-4">
+      <div className="flex h-11 items-center rounded-xl bg-[#171812] px-4">
+        <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-[#f4f2e9] transition-colors hover:text-[#ecf39e]" data-testid="link-back-explorer">
+          <ArrowLeft className="h-4 w-4" /> Anatomy explorer
+        </Link>
+      </div>
+      <div className="mt-3 grid gap-10 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-16">
         <motion.aside initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-[2rem] bg-[#f4f2e9] p-6 shadow-xl">
             <p className="mb-3 text-center text-xs text-[#232a16]/75">Hover a region to explore. Click or tap for details.</p>

@@ -257,20 +257,20 @@
 }
 .muscle:hover path.m,
 .muscle:focus-visible path.m {
-  fill: rgba(144, 169, 85, 0.55);
+  fill: rgba(220, 56, 56, 0.62);
 }
 .muscle:focus-visible path.m {
   stroke: #232a16;
   stroke-width: 2;
 }
 .muscle[data-active='true'] path.m {
-  fill: rgba(144, 169, 85, 0.5);
+  fill: rgba(220, 56, 56, 0.58);
 }
 .has-region .muscle[data-active='true'] path.m {
   fill: transparent;
 }
 .region-highlight rect {
-  fill: rgba(236, 243, 158, 0.85);
+  fill: rgba(220, 56, 56, 0.72);
 }
 .region-hotspot {
   cursor: pointer;
@@ -282,12 +282,12 @@
   transition: fill 0.18s ease;
 }
 .region-hotspot[data-active='true'] rect {
-  fill: rgba(236, 243, 158, 0.8);
+  fill: rgba(220, 56, 56, 0.74);
 }
 .region-hotspot[data-hovered='true'] rect,
 .region-hotspot:focus-visible rect {
-  fill: rgba(236, 243, 158, 0.95);
-  stroke: #232a16;
+  fill: rgba(220, 56, 56, 0.9);
+  stroke: #ffffff;
   stroke-width: 2;
 }
 
