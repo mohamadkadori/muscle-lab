@@ -23,7 +23,7 @@ export default function ExerciseDetail() {
       <Link href="/exercises" className="inline-flex items-center gap-2 text-sm font-semibold hover:underline" data-testid="link-back-exercises">
         <ArrowLeft className="h-4 w-4" /> All exercises
       </Link>
-      <div className="mt-4 inline-block rounded-full bg-[#232a16] px-3 py-1 font-mono text-[11px] uppercase text-[#abc03c]">
+      <div className="mt-4 inline-block rounded-full bg-[#232a16] px-3 py-1 font-mono text-[11px] uppercase text-[#ecf39e]">
         Sample exercise / demo content
       </div>
       <div className="mt-4 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16">
@@ -37,7 +37,7 @@ export default function ExerciseDetail() {
             <div className="rounded-2xl bg-[#f4f2e9] p-4">
               <Target className="h-5 w-5" />
               <div className="mt-3 font-mono text-[11px] uppercase text-[#232a16]/60">Target</div>
-              <Link href={`/muscles/${muscle.slug}`} className="font-display text-lg font-bold underline decoration-[#abc03c] decoration-2 underline-offset-4" data-testid="link-target-muscle">
+              <Link href={`/muscles/${muscle.slug}`} className="font-display text-lg font-bold underline decoration-[#ecf39e] decoration-2 underline-offset-4" data-testid="link-target-muscle">
                 {muscle.name}
               </Link>
               <div className="text-sm text-[#232a16]/70">{regions.map((r) => r.name).join(', ')}</div>
@@ -58,14 +58,14 @@ export default function ExerciseDetail() {
           <ol className="mt-4 space-y-3">
             {ex.instructions.map((s, i) => (
               <motion.li key={i} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.07 }} className="flex gap-4 rounded-2xl bg-[#f4f2e9] p-4">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#232a16] font-display font-bold text-[#abc03c]">{i + 1}</span>
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#232a16] font-display font-bold text-[#ecf39e]">{i + 1}</span>
                 <p className="pt-1">{s}</p>
               </motion.li>
             ))}
           </ol>
 
           <div className="mt-8 rounded-2xl bg-[#232a16] p-6 text-[#f4f2e9]">
-            <h2 className="font-mono text-xs uppercase tracking-widest text-[#abc03c]">Coaching cues</h2>
+            <h2 className="font-mono text-xs uppercase tracking-widest text-[#ecf39e]">Coaching cues</h2>
             <ul className="mt-3 list-disc space-y-1 pl-5">
               {ex.tips.map((t) => <li key={t}>{t}</li>)}
             </ul>

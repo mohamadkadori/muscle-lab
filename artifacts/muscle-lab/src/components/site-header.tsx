@@ -13,7 +13,7 @@ const NAV = [
 export function Logo() {
   return (
     <span className="font-display text-2xl font-extrabold tracking-tight text-[#232a16]">
-      muscle<span className="rounded-md bg-[#232a16] px-1.5 pb-0.5 ml-0.5 text-[#abc03c]">Lab</span>
+      muscle<span className="rounded-md bg-[#232a16] px-1.5 pb-0.5 ml-0.5 text-[#ecf39e]">Lab</span>
     </span>
   );
 }
@@ -24,7 +24,7 @@ export function SiteHeader() {
   const isActive = (href: string) => (href === '/' ? loc === '/' || loc.startsWith('/muscles') : loc.startsWith(href));
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#232a16]/15 bg-[#abc03c]/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-[#232a16]/10 bg-[#f4f2e9]/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
         <Link href="/" className="rounded-lg" data-testid="link-brand" onClick={() => setOpen(false)}>
           <Logo />
@@ -69,7 +69,7 @@ export function SiteHeader() {
             className="overflow-hidden border-t border-[#232a16]/15 md:hidden"
             aria-label="Mobile"
           >
-            <div className="flex flex-col gap-1 p-4">
+            <div className="flex flex-col gap-1 bg-[#f4f2e9] p-4">
               {NAV.map((n) => (
                 <Link
                   key={n.id}
@@ -97,7 +97,7 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-10 md:flex-row md:items-center md:justify-between md:px-8">
         <div>
           <div className="font-display text-2xl font-extrabold">
-            muscle<span className="text-[#abc03c]">Lab</span>
+            muscle<span className="text-[#ecf39e]">Lab</span>
           </div>
           <p className="mt-1 max-w-sm text-sm text-[#f4f2e9]/60">
             A visual field guide to the muscles you train. Exercise content is sample data.
@@ -105,7 +105,7 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {NAV.map((n) => (
-            <Link key={n.id} href={n.href} className="text-[#f4f2e9]/80 hover:text-[#abc03c]" data-testid={`link-footer-${n.id}`}>
+            <Link key={n.id} href={n.href} className="text-[#f4f2e9]/80 hover:text-[#ecf39e]" data-testid={`link-footer-${n.id}`}>
               {n.label}
             </Link>
           ))}

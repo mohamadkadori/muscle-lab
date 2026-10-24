@@ -39,7 +39,7 @@ export function ExerciseCard({ exercise, index = 0 }: { exercise: Exercise; inde
         className="group flex h-full flex-col rounded-2xl border border-[#232a16]/10 bg-[#f4f2e9] p-5 transition-all hover:-translate-y-1 hover:shadow-lg"
       >
         <div className="flex items-start justify-between gap-3">
-          <span className="rounded-full bg-[#abc03c] px-2.5 py-1 font-mono text-[11px] font-medium uppercase text-[#232a16]">
+          <span className="rounded-full bg-[#ecf39e] px-2.5 py-1 font-mono text-[11px] font-medium uppercase text-[#232a16]">
             {muscle?.name}
           </span>
           <ArrowUpRight className="h-5 w-5 text-[#232a16]/30 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#232a16]" />

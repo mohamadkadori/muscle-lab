@@ -19,7 +19,7 @@ export default function Explorer() {
             Every muscle on the body map is a door. Point at one, tap it, and learn its job, its parts and the exercises that work it.
           </p>
           <div className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#232a16] px-4 py-2 text-sm text-[#f4f2e9]">
-            <MousePointerClick className="h-4 w-4 text-[#abc03c]" />
+            <MousePointerClick className="h-4 w-4 text-[#ecf39e]" />
             Hover or tab to a muscle, click to open it
           </div>
           <div className="mt-10">
@@ -30,7 +30,7 @@ export default function Explorer() {
                   key={m.slug}
                   href={`/muscles/${m.slug}`}
                   data-testid={`link-muscle-chip-${m.slug}`}
-                  className="rounded-full border border-[#232a16]/30 px-3.5 py-1.5 text-sm font-semibold text-[#232a16] transition-colors hover:bg-[#232a16] hover:text-[#abc03c]"
+                  className="rounded-full border border-[#232a16]/30 px-3.5 py-1.5 text-sm font-semibold text-[#232a16] transition-colors hover:bg-[#232a16] hover:text-[#ecf39e]"
                 >
                   {m.name}
                 </Link>

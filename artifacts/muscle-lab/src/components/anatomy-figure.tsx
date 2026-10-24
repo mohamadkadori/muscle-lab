@@ -9,6 +9,7 @@ import {
   FRONT_LINES,
   HEAD,
   MIRROR,
+  REGION_HIGHLIGHTS,
   type View,
 } from '@/data/anatomy-paths';
 import { getMuscle } from '@/data/muscles';
@@ -17,10 +18,11 @@ interface Props {
   view: View;
   interactive?: boolean;
   activeSlug?: string;
+  activeRegion?: string;
   className?: string;
 }
 
-export function AnatomyFigure({ view, interactive = true, activeSlug, className = '' }: Props) {
+export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegion, className = '' }: Props) {
   const [, navigate] = useLocation();
   const wrap = useRef<HTMLDivElement>(null);
   const [tip, setTip] = useState<{ slug: string; x: number; y: number } | null>(null);
@@ -107,6 +109,16 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, className 
             </g>
           );
         })}
+        {activeSlug && activeRegion && REGION_HIGHLIGHTS[activeSlug]?.[activeRegion] && (
+          <g className="region-highlight" aria-hidden="true">
+            {REGION_HIGHLIGHTS[activeSlug][activeRegion].map((d, i) => (
+              <g key={i}>
+                <path d={d} />
+                <path d={d} transform={MIRROR} />
+              </g>
+            ))}
+          </g>
+        )}
         <g fill="none" stroke="#f4f2e9" strokeWidth="1.4" strokeLinecap="round" pointerEvents="none" opacity="0.9">
           {lines.map((d, i) => (
             <g key={i}>
@@ -131,7 +143,7 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, className 
           data-testid="tooltip-muscle"
         >
           <div className="font-display text-sm font-bold leading-tight">{tipMuscle.name}</div>
-          <div className="mt-0.5 flex items-center gap-1 font-mono text-[11px] text-[#abc03c]">
+          <div className="mt-0.5 flex items-center gap-1 font-mono text-[11px] text-[#ecf39e]">
             Go to muscle page <ArrowUpRight className="h-3 w-3" />
           </div>
         </div>

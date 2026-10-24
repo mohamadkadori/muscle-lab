@@ -16,7 +16,7 @@ export default function About() {
           <p className="mt-3 text-[#232a16]/85">Gym instructions often assume you already know where the lats are. We believe beginners train better when they can see what they are working, so we built the body first and the exercises second.</p>
         </div>
         <div className="rounded-3xl bg-[#232a16] p-8 text-[#f4f2e9]">
-          <h2 className="font-display text-2xl font-bold text-[#abc03c]">How it works</h2>
+          <h2 className="font-display text-2xl font-bold text-[#ecf39e]">How it works</h2>
           <p className="mt-3 text-[#f4f2e9]/85">Choose a muscle on the anatomy map, learn its job, pick a training region, and see the exercises that fit. No accounts, no noise.</p>
         </div>
         <div className="rounded-3xl border border-[#232a16]/30 p-8 md:col-span-2">

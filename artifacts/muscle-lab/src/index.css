@@ -48,7 +48,7 @@
   --color-sidebar-accent-border: var(--sidebar-accent-border);
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  --color-lime: #abc03c;
+  --color-lime: #ecf39e;
   --color-ink: #232a16;
   --color-paper: #f4f2e9;
   --color-stone: #bdbbb1;
@@ -71,8 +71,8 @@
   --elevate-1: rgba(0, 0, 0, 0.03);
   --elevate-2: rgba(0, 0, 0, 0.08);
 
-  /* #ABC03C = 69.5 52.4% 49.4% */
-  --background: 69.5 52.4% 49.4%;
+  /* #90A955 = 78 49% 50%; #ECF39E = 65 77% 79% */
+  --background: 78 49% 50%;
   --foreground: 78 36% 13%;
   --border: 60 10% 72%;
   --card: 48 30% 94%;
@@ -85,7 +85,7 @@
   --sidebar-primary-foreground: 48 30% 94%;
   --sidebar-accent: 55 12% 88%;
   --sidebar-accent-foreground: 78 36% 13%;
-  --sidebar-ring: 69.5 52.4% 49.4%;
+  --sidebar-ring: 78 49% 50%;
   --popover: 48 30% 94%;
   --popover-foreground: 78 36% 13%;
   --popover-border: 55 12% 82%;
@@ -95,17 +95,17 @@
   --secondary-foreground: 78 36% 13%;
   --muted: 55 12% 88%;
   --muted-foreground: 70 8% 38%;
-  --accent: 69.5 52.4% 49.4%;
+  --accent: 65 77% 79%;
   --accent-foreground: 78 36% 13%;
   --destructive: 8 60% 42%;
   --destructive-foreground: 48 30% 94%;
   --input: 55 10% 70%;
   --ring: 78 36% 13%;
-  --chart-1: 69.5 52.4% 49.4%;
+  --chart-1: 78 49% 50%;
   --chart-2: 78 36% 13%;
   --chart-3: 55 8% 60%;
   --chart-4: 60 20% 40%;
-  --chart-5: 48 20% 80%;
+  --chart-5: 65 77% 79%;
 
   --app-font-sans: 'DM Sans', sans-serif;
   --app-font-serif: Georgia, serif;
@@ -132,7 +132,7 @@
 }
 
 .dark {
-  --background: 69.5 52.4% 49.4%;
+  --background: 78 49% 50%;
   --foreground: 78 36% 13%;
   --border: 60 10% 72%;
   --card: 48 30% 94%;
@@ -145,7 +145,7 @@
   --sidebar-primary-foreground: 48 30% 94%;
   --sidebar-accent: 55 12% 88%;
   --sidebar-accent-foreground: 78 36% 13%;
-  --sidebar-ring: 69.5 52.4% 49.4%;
+  --sidebar-ring: 78 49% 50%;
   --popover: 48 30% 94%;
   --popover-foreground: 78 36% 13%;
   --popover-border: 55 12% 82%;
@@ -155,17 +155,17 @@
   --secondary-foreground: 78 36% 13%;
   --muted: 55 12% 88%;
   --muted-foreground: 70 8% 38%;
-  --accent: 69.5 52.4% 49.4%;
+  --accent: 65 77% 79%;
   --accent-foreground: 78 36% 13%;
   --destructive: 8 60% 42%;
   --destructive-foreground: 48 30% 94%;
   --input: 55 10% 70%;
   --ring: 78 36% 13%;
-  --chart-1: 69.5 52.4% 49.4%;
+  --chart-1: 78 49% 50%;
   --chart-2: 78 36% 13%;
   --chart-3: 55 8% 60%;
   --chart-4: 60 20% 40%;
-  --chart-5: 48 20% 80%;
+  --chart-5: 65 77% 79%;
 }
 
 @layer base {
@@ -177,7 +177,7 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    background-color: #abc03c;
+    background-color: #90a955;
   }
   h1,
   h2,
@@ -260,20 +260,27 @@
 .muscle:hover path.m,
 .muscle:focus-visible path.m,
 .muscle[data-active='true'] path.m {
-  fill: #abc03c;
+  fill: #90a955;
 }
 .muscle:focus-visible path.m {
   stroke: #232a16;
   stroke-width: 2.4;
 }
 .muscle[data-active='true'] path.m {
-  fill: #8fa328;
+  fill: #789441;
 }
 .muscle:active path.m {
-  fill: #8fa328;
+  fill: #789441;
 }
 .fig-dim .muscle:not([data-active='true']) path.m {
   fill: #e2e0d7;
+}
+.region-highlight path {
+  fill: #ecf39e;
+  stroke: #f4f2e9;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  transition: fill 0.25s ease;
 }
 
 .grain::after {

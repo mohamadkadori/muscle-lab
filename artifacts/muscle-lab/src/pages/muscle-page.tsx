@@ -39,7 +39,12 @@ export default function MusclePage() {
       <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-16">
         <motion.aside initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-[2rem] bg-[#f4f2e9] p-6 shadow-xl">
-            <AnatomyFigure view={view} interactive={false} activeSlug={muscle.slug} className="mx-auto max-w-[240px]" />
+            <AnatomyFigure view={view} interactive={false} activeSlug={muscle.slug} activeRegion={region === 'all' ? undefined : region} className="mx-auto max-w-[240px]" />
+            {activeRegion && (
+              <p className="mt-4 rounded-xl bg-[#ecf39e] px-4 py-2 text-center font-mono text-xs uppercase tracking-wide text-[#232a16]">
+                Highlighted: {activeRegion.name}
+              </p>
+            )}
             {muscle.views.length > 1 && (
               <div className="mt-3 flex justify-center gap-1 rounded-full bg-[#232a16]/10 p-1">
                 {muscle.views.map((v) => (
@@ -49,7 +54,7 @@ export default function MusclePage() {
                     data-testid={`button-view-${v}`}
                     aria-pressed={view === v}
                     className={`flex-1 rounded-full px-4 py-1.5 font-mono text-xs uppercase transition-colors ${
-                      view === v ? 'bg-[#232a16] text-[#abc03c]' : 'text-[#232a16]'
+                      view === v ? 'bg-[#232a16] text-[#ecf39e]' : 'text-[#232a16]'
                     }`}
                   >
                     {v}
@@ -73,7 +78,7 @@ export default function MusclePage() {
                 <p className="mt-2">{muscle.job}</p>
               </div>
               <div className="rounded-2xl bg-[#232a16] p-5 text-[#f4f2e9]">
-                <h2 className="font-mono text-xs uppercase tracking-widest text-[#abc03c]">Beginner tip</h2>
+                <h2 className="font-mono text-xs uppercase tracking-widest text-[#ecf39e]">Beginner tip</h2>
                 <p className="mt-2">{muscle.beginnerTip}</p>
               </div>
             </div>

@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { useMeta } from '@/hooks/use-meta';
 
 const STEPS = [
-  { t: 'Start with the map', d: 'Open the anatomy explorer and tap the muscles you want to understand. Knowing what you are working makes every rep purposeful.', link: '/', cta: 'Open explorer' },
+  { t: 'Use the map to find exercises', d: 'Choose a muscle to see what it does, then pick a training region to find exercises that work it.', link: '/', cta: 'Open explorer' },
   { t: 'Pick machines and dumbbells first', d: 'They guide the path of movement while you learn. Barbells can wait until the pattern feels natural.', link: '/exercises', cta: 'Browse exercises' },
   { t: 'Train each muscle about twice a week', d: 'Two or three sets of a few exercises per muscle, with a day or two between sessions, is plenty at the start.' },
   { t: 'Leave two reps in the tank', d: 'Finish each set feeling you could have done two more good reps. Form first, weight second.' },
@@ -25,10 +25,24 @@ export default function NewToGym() {
       <h1 className="mt-3 font-display text-5xl font-extrabold leading-[0.95] text-[#232a16] md:text-8xl">New to gym?<br />Good. Start here.</h1>
       <p className="mt-6 max-w-xl text-lg text-[#232a16]/85">Nobody is watching you as closely as you think. Here is the short version of how to begin.</p>
 
+      <section className="mt-10 grid gap-4 md:grid-cols-2" aria-label="Exercise and nutrition basics">
+        <div className="rounded-3xl bg-[#ecf39e] p-6 md:p-8">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/60">The basics · training</p>
+          <h2 className="mt-3 font-display text-2xl font-bold">Build a habit before chasing numbers.</h2>
+          <p className="mt-3 text-[#232a16]/80">Start with movements you can do with control. Learn the technique, use a manageable weight, and add a little challenge over time. A steady routine beats an intense workout you can’t repeat.</p>
+        </div>
+        <div className="rounded-3xl bg-[#f4f2e9] p-6 md:p-8">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/60">The basics · nutrition</p>
+          <h2 className="mt-3 font-display text-2xl font-bold">Eat well, recover well.</h2>
+          <p className="mt-3 text-[#232a16]/80">Choose regular balanced meals, include a source of protein, drink water, and get enough sleep. You don’t need a complicated diet or supplements to begin making progress.</p>
+        </div>
+      </section>
+
+      <p className="mt-10 font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/60">A simple way to get started</p>
       <ol className="mt-12 space-y-4">
         {STEPS.map((s, i) => (
           <motion.li key={s.t} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5 }} className="grid gap-4 rounded-3xl bg-[#f4f2e9] p-6 md:grid-cols-[96px_1fr] md:p-8">
-            <span className="font-display text-6xl font-extrabold text-[#abc03c] [-webkit-text-stroke:2px_#232a16] md:text-7xl">{String(i + 1).padStart(2, '0')}</span>
+            <span className="font-display text-6xl font-extrabold text-[#ecf39e] [-webkit-text-stroke:2px_#232a16] md:text-7xl">{String(i + 1).padStart(2, '0')}</span>
             <div>
               <h2 className="font-display text-2xl font-bold">{s.t}</h2>
               <p className="mt-2 max-w-2xl text-[#232a16]/80">{s.d}</p>
