@@ -26,8 +26,12 @@ export default function About() {
         </section>
         <section className="rounded-3xl bg-[#ecf39e] p-5 md:col-span-2 md:p-6" aria-labelledby="movement-stats-title">
           <h2 id="movement-stats-title" className="font-display text-xl font-bold text-[#232a16] md:text-2xl">
-            Movement matters—even on coding days.
+            Movement matters for everyone.
           </h2>
+          <p className="mt-2 text-sm leading-relaxed text-[#232a16]/80">
+            Whether you study, work, or care for a family, making time to move matters.
+            Developers are just one example of people whose daily routines can involve long stretches of sitting.
+          </p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <article className="rounded-2xl bg-[#f4f2e9] p-4">
               <p className="font-display text-3xl font-extrabold tracking-tight text-[#232a16]">31%</p>
@@ -44,22 +48,22 @@ export default function About() {
               </a>
             </article>
             <article className="rounded-2xl bg-[#232a16] p-4 text-[#f4f2e9]">
-              <p className="font-display text-3xl font-extrabold tracking-tight text-[#ecf39e]">+2.3 hrs</p>
+              <p className="font-display text-3xl font-extrabold tracking-tight text-[#ecf39e]">150 min</p>
               <p className="mt-2 text-sm leading-relaxed text-[#f4f2e9]/80">
-                of sedentary time per day for office workers compared with nurses, in a review of activity-tracking studies.
+                of moderate-intensity physical activity per week is the minimum WHO recommends for adults.
               </p>
               <a
-                href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11302194/"
+                href="https://www.who.int/news-room/fact-sheets/detail/physical-activity"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-3 inline-block text-xs font-semibold text-[#ecf39e] underline decoration-[#90a955] decoration-2 underline-offset-4"
               >
-                Park et al., BMC Public Health · 2024
+                WHO · Adult activity guidance
               </a>
             </article>
           </div>
           <p className="mt-3 text-xs leading-relaxed text-[#232a16]/65">
-            Research on adults and office workers, not developers specifically. Not a personal health assessment.
+            Population-level data and general activity guidance for adults. Not a personal health assessment.
           </p>
         </section>
         <div className="rounded-3xl border border-[#232a16]/30 p-8 md:col-span-2">
