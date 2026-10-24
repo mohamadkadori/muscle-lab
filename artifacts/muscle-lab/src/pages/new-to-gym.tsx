@@ -23,9 +23,12 @@ export default function NewToGym() {
     <div className="mx-auto max-w-5xl px-5 pt-10 md:px-8 md:pt-16">
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/70">Beginner guide</p>
       <h1 className="mt-3 font-display text-5xl font-extrabold leading-[0.95] text-[#232a16] md:text-8xl">New to gym?<br />Good. Start here.</h1>
-      <p className="mt-6 max-w-2xl text-lg text-[#232a16]/85">Don’t overthink it—just start your journey. You don’t need to know every exercise, have the perfect workout plan, or feel full of energy every time. Start small, learn the basics of good form as you go, and give yourself room to improve. Showing up is a great first step.</p>
-
-      <section className="mt-10 grid gap-4 md:grid-cols-2" aria-label="Exercise and nutrition basics">
+      <section className="mt-10 grid gap-4 md:grid-cols-2" aria-label="Getting started with exercise and nutrition">
+        <div className="rounded-3xl bg-[#f4f2e9] p-6 md:p-8">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/60">First things first</p>
+          <h2 className="mt-3 font-display text-2xl font-bold">You don’t need a perfect plan to begin.</h2>
+          <p className="mt-3 text-[#232a16]/80">Don’t overthink it—start your journey one step at a time. You don’t need to know every exercise or the “right” way to do everything before you walk in. You don’t need the best workout plan, or loads of energy every day. A short, manageable session still counts. Show up, learn as you go, and let your routine grow with you.</p>
+        </div>
         <div className="rounded-3xl bg-[#ecf39e] p-6 md:p-8">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/60">The basics · training</p>
           <h2 className="mt-3 font-display text-2xl font-bold">Build a habit before chasing numbers.</h2>
@@ -35,6 +38,11 @@ export default function NewToGym() {
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/60">The basics · nutrition</p>
           <h2 className="mt-3 font-display text-2xl font-bold">Eat well, recover well.</h2>
           <p className="mt-3 text-[#232a16]/80">Choose regular balanced meals, include a source of protein, drink water, and get enough sleep. You don’t need a complicated diet or supplements to begin making progress.</p>
+        </div>
+        <div className="rounded-3xl bg-[#ecf39e] p-6 md:p-8">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/60">What to train</p>
+          <h2 className="mt-3 font-display text-2xl font-bold">Give your whole body a turn.</h2>
+          <p className="mt-3 text-[#232a16]/80">A balanced start includes legs (quads, hamstrings, glutes and calves), back, chest, shoulders and core. Arms get work too, especially during many pushing and pulling exercises. You don’t need a separate day for every muscle: begin with a simple routine that covers the main groups, leave time to recover, and later give extra attention to the muscles that matter most for your goals.</p>
         </div>
       </section>
 
