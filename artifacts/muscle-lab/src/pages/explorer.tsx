@@ -16,7 +16,7 @@ export default function Explorer() {
           <h1 className="mt-4 font-display text-5xl font-extrabold leading-[0.95] text-[#232a16] md:text-7xl">
             Know exactly what you train.
           </h1>
-          <p className="mt-6 max-w-md text-lg text-[#232a16]/80">
+          <p className="mt-6 max-w-md text-lg text-card">
             Every muscle on the body map is a door. Point at one, tap it, and learn its job, its parts and the exercises that work it.
           </p>
           <div className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#232a16] px-4 py-2 text-sm text-[#f4f2e9]">
@@ -58,7 +58,6 @@ export default function Explorer() {
           </DiagramViewer>
         </motion.div>
       </div>
-
       <div className="relative mt-20 overflow-hidden border-y border-[#232a16]/20 py-4" aria-hidden>
         <div className="marquee flex w-max gap-10 font-display text-3xl font-extrabold uppercase text-[#232a16]/80">
           {[0, 1].map((k) => (
