@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "muscleLab"
+description = "An interactive anatomy and exercise guide with clickable muscle maps, muscle-specific exercise libraries, and a beginner gym guide."
+version = "1.0.0"
+id = "artifacts/muscle-lab"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24151
+
+[services.development]
+run = "pnpm --filter @workspace/muscle-lab run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/muscle-lab", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/muscle-lab/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24151"
+BASE_PATH = "/"

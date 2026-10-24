@@ -1,6 +1,6 @@
-# [Project name]
+# muscleLab
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+An interactive anatomy and exercise guide for exploring muscles and learning how to train them.
 
 ## Run & Operate
 
@@ -34,7 +34,11 @@ _Describe the high-level user-facing capabilities of this app once they exist._
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Use #ABC03C as the main green background with off-white and gray; anatomy diagrams should be white and gray.
+- Hovering a muscle shows only its name and “Go to muscle page”; clicking opens the muscle information and exercises on a separate page.
+- Show submuscle choices after opening a group, including upper, mid, and lower chest.
+- Exercises are dummy content for now. The user will supply the exercise content to replace them.
+- Keep muscleLab at the left of the top navigation, with All exercises, New to gym?, and About us at the right.
 
 ## Gotchas
 
