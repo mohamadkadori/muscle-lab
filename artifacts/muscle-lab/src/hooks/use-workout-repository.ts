@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@clerk/react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   useListWorkouts, saveCloudWorkout, deleteCloudWorkout, importWorkouts,
 } from '@workspace/api-client-react';
-import { deleteWorkout, loadWorkouts, saveWorkout, type Workout } from '@/lib/workout-storage';
+import { WORKOUT_STORAGE_KEY, deleteWorkout, loadWorkouts, saveWorkout, type Workout } from '@/lib/workout-storage';
 
 export function workoutError(error: unknown): string {
   if (error && typeof error === 'object' && 'data' in error) {
@@ -23,6 +23,18 @@ export function useWorkoutRepository() {
   const { isSignedIn, userId } = useAuth();
   const cloud = Boolean(isSignedIn);
   const [local, setLocal] = useState(readLocal);
+  useEffect(() => {
+    const reload = () => setLocal(readLocal());
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === WORKOUT_STORAGE_KEY || event.key === null) reload();
+    };
+    window.addEventListener('storage', onStorage);
+    window.addEventListener('focus', reload);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('focus', reload);
+    };
+  }, []);
   const qc = useQueryClient();
   const key = ['cloud-workouts', userId] as const;
   const query = useListWorkouts({
@@ -48,6 +60,9 @@ export function useWorkoutRepository() {
   const save = async (workout: Workout, isNew: boolean): Promise<Workout> => {
     if (cloud) {
       const saved = await saveCloudWorkout(workout.id, { ...workout, isNew }, { credentials: 'include' });
+      // A list request started before the write may still contain the old
+      // version. Abort it before applying the authoritative mutation result.
+      await qc.cancelQueries({ queryKey: key });
       qc.setQueryData<Workout[]>(key, (old = []) => [saved, ...old.filter((w) => w.id !== saved.id)]);
       return saved;
     }
@@ -58,6 +73,7 @@ export function useWorkoutRepository() {
   const remove = async (workout: Workout) => {
     if (cloud) {
       await deleteCloudWorkout(workout.id, { updatedAt: workout.updatedAt }, { credentials: 'include' });
+      await qc.cancelQueries({ queryKey: key });
       qc.setQueryData<Workout[]>(key, (old = []) => old.filter((w) => w.id !== workout.id));
     } else {
       deleteWorkout(workout.id);
