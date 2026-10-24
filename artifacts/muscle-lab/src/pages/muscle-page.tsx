@@ -92,7 +92,13 @@ export default function MusclePage() {
               {[{ id: 'all', name: `All ${muscle.name.toLowerCase()}` }, ...muscle.regions].map((r) => (
                 <button
                   key={r.id}
-                  onClick={() => setRegion(r.id)}
+                  onClick={() => {
+                    setRegion(r.id);
+                    if (muscle.views.length > 1) {
+                      if (muscle.slug === 'shoulders') setView(r.id === 'rear' ? 'back' : 'front');
+                      if (muscle.slug === 'traps') setView(r.id === 'upper' || r.id === 'all' ? muscle.views[0] : 'back');
+                    }
+                  }}
                   aria-pressed={region === r.id}
                   data-testid={`button-region-${r.id}`}
                   className={`relative rounded-full border px-5 py-2.5 text-sm font-semibold transition-all ${

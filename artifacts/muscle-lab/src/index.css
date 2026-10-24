@@ -251,36 +251,26 @@
   outline: none;
 }
 .muscle path.m {
-  fill: #d6d4cb;
-  stroke: #f4f2e9;
-  stroke-width: 1.8;
-  stroke-linejoin: round;
-  transition: fill 0.25s ease;
+  fill: transparent;
+  stroke: none;
+  transition: fill 0.2s ease;
 }
 .muscle:hover path.m,
-.muscle:focus-visible path.m,
-.muscle[data-active='true'] path.m {
-  fill: #90a955;
+.muscle:focus-visible path.m {
+  fill: rgba(144, 169, 85, 0.55);
 }
 .muscle:focus-visible path.m {
   stroke: #232a16;
-  stroke-width: 2.4;
+  stroke-width: 2;
 }
 .muscle[data-active='true'] path.m {
-  fill: #789441;
+  fill: rgba(144, 169, 85, 0.5);
 }
-.muscle:active path.m {
-  fill: #789441;
+.has-region .muscle[data-active='true'] path.m {
+  fill: transparent;
 }
-.fig-dim .muscle:not([data-active='true']) path.m {
-  fill: #e2e0d7;
-}
-.region-highlight path {
-  fill: #ecf39e;
-  stroke: #f4f2e9;
-  stroke-width: 2;
-  stroke-linejoin: round;
-  transition: fill 0.25s ease;
+.region-highlight rect {
+  fill: rgba(236, 243, 158, 0.85);
 }
 
 .grain::after {

@@ -1,17 +1,9 @@
 import { useRef, useState, type KeyboardEvent, type MouseEvent } from 'react';
 import { useLocation } from 'wouter';
 import { ArrowUpRight } from 'lucide-react';
-import {
-  BACK,
-  BACK_LINES,
-  BODY_BASE,
-  FRONT,
-  FRONT_LINES,
-  HEAD,
-  MIRROR,
-  REGION_HIGHLIGHTS,
-  type View,
-} from '@/data/anatomy-paths';
+import { BACK, FRONT, MIRROR, REGION_RECTS, type View } from '@/data/anatomy-paths';
+import frontImg from '@assets/eac9892c-2f81-4186-888a-63a9575c4cd9.jpg_1792839462087.jpeg';
+import backImg from '@assets/ea3e7204-887f-4b7e-ae73-4565fa5206e3.jpg_1792839462088.jpeg';
 import { getMuscle } from '@/data/muscles';
 
 interface Props {
@@ -27,7 +19,6 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegi
   const wrap = useRef<HTMLDivElement>(null);
   const [tip, setTip] = useState<{ slug: string; x: number; y: number } | null>(null);
   const parts = view === 'front' ? FRONT : BACK;
-  const lines = view === 'front' ? FRONT_LINES : BACK_LINES;
 
   const place = (slug: string, cx: number, cy: number) => {
     const r = wrap.current?.getBoundingClientRect();
@@ -52,19 +43,12 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegi
   return (
     <div ref={wrap} className={`relative ${className}`} onMouseLeave={() => setTip(null)}>
       <svg
-        viewBox="0 0 400 810"
+        viewBox="0 0 468 1024"
         role="group"
         aria-label={`${view} view anatomy`}
-        className={`w-full h-auto select-none ${activeSlug ? 'fig-dim' : ''}`}
+        className={`w-full h-auto select-none ${activeRegion ? 'has-region' : ''}`}
       >
-        <g fill="#bdbbb1" stroke="#bdbbb1" strokeWidth="1" strokeLinejoin="round">
-          <path d={HEAD} />
-          <path d={BODY_BASE} />
-          <path d={BODY_BASE} transform={MIRROR} />
-          <path d={HEAD} transform={MIRROR} />
-        </g>
-        {/* neck */}
-        <rect x="184" y="108" width="32" height="34" fill="#bdbbb1" />
+        <image href={view === 'front' ? frontImg : backImg} x="0" y="0" width="468" height="1024" />
         {parts.map((p) => {
           const m = getMuscle(p.slug);
           const label = m?.name ?? p.slug;
@@ -97,6 +81,7 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegi
               onKeyDown={onKey(p.slug)}
               onMouseEnter={onMove(p.slug)}
               onMouseMove={onMove(p.slug)}
+              onMouseLeave={() => setTip(null)}
               onFocus={onFocus(p.slug)}
               onBlur={() => setTip(null)}
             >
@@ -109,32 +94,24 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegi
             </g>
           );
         })}
-        {activeSlug && activeRegion && REGION_HIGHLIGHTS[activeSlug]?.[activeRegion] && (
-          <g className="region-highlight" aria-hidden="true">
-            {REGION_HIGHLIGHTS[activeSlug][activeRegion].map((d, i) => (
-              <g key={i}>
-                <path d={d} />
-                <path d={d} transform={MIRROR} />
-              </g>
-            ))}
-          </g>
-        )}
-        <g fill="none" stroke="#f4f2e9" strokeWidth="1.4" strokeLinecap="round" pointerEvents="none" opacity="0.9">
-          {lines.map((d, i) => (
-            <g key={i}>
-              <path d={d} />
-              <path d={d} transform={MIRROR} />
+        {activeSlug && activeRegion && REGION_RECTS[activeSlug]?.[activeRegion] && (() => {
+          const part = parts.find((p) => p.slug === activeSlug);
+          if (!part) return null;
+          const [x, y, w, h] = REGION_RECTS[activeSlug][activeRegion];
+          const id = `clip-${view}-${activeSlug}`;
+          return (
+            <g className="region-highlight" aria-hidden="true" pointerEvents="none">
+              <clipPath id={id}>{part.paths.map((d, i) => <path key={i} d={d} />)}</clipPath>
+              {[undefined, MIRROR].map((t, i) => (
+                <g key={i} transform={t}>
+                  <g clipPath={`url(#${id})`}>
+                    <rect x={x} y={y} width={w} height={h} />
+                  </g>
+                </g>
+              ))}
             </g>
-          ))}
-        </g>
-        {/* face hint / spine hint */}
-        <g fill="none" stroke="#f4f2e9" strokeWidth="1.2" opacity="0.7" pointerEvents="none">
-          {view === 'front' ? (
-            <path d="M188 80 Q200 90 212 80" />
-          ) : (
-            <path d="M200 100 L200 126" />
-          )}
-        </g>
+          );
+        })()}
       </svg>
       {tip && tipMuscle && interactive && (
         <div
