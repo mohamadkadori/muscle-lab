@@ -16,6 +16,7 @@ import ExerciseDetail from '@/pages/exercise-detail';
 import NewToGym from '@/pages/new-to-gym';
 import Workouts from '@/pages/workouts';
 import About from '@/pages/about';
+import Coach from '@/pages/coach';
 import {
   Redirect,
   Route,
@@ -137,6 +138,14 @@ function KeyedWorkouts() {
   return <Workouts key={user?.id ?? 'guest'} />;
 }
 
+function KeyedCoach() {
+  const { user, isLoaded } = useUser();
+  if (!isLoaded) {
+    return <div className="mx-auto h-64 max-w-7xl animate-pulse px-5 py-10" aria-busy="true" data-testid="skeleton-coach" />;
+  }
+  return <Coach key={user?.id ?? 'guest'} />;
+}
+
 function Router() {
   return (
     <RoutedErrorBoundary>
@@ -151,6 +160,7 @@ function Router() {
         <Route path="/exercises/:slug" component={ExerciseDetail} />
         <Route path="/new-to-gym" component={NewToGym} />
         <Route path="/workouts" component={KeyedWorkouts} />
+        <Route path="/coach" component={KeyedCoach} />
         <Route path="/about" component={About} />
         <Route component={NotFound} />
       </Switch>

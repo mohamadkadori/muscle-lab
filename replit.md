@@ -30,7 +30,7 @@ _Populate as you build — non-obvious choices a reader couldn't infer from the 
 
 ## Product
 
-muscleLab combines a clickable anatomy map, sample exercise library, beginner guidance, and a personal workout builder with training notes. Signed-in workouts are privately saved to an account for use across devices. Guest routines remain browser-local.
+muscleLab combines a clickable anatomy map, sample exercise library, beginner guidance, and a personal workout builder with training notes. Signed-in workouts are privately saved to an account for use across devices. Guest routines remain browser-local. The AI coach answers general fitness questions and generates workout drafts users can review and explicitly save to My workouts.
 
 ## User preferences
 

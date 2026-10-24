@@ -9,6 +9,57 @@ import * as zod from 'zod';
 
 
 /**
+ * @summary Ask the AI training coach for advice or a draft workout plan
+ */
+export const askCoachBodyMessagesItemContentMax = 16000;
+
+export const askCoachBodyMessagesMax = 16;
+
+
+
+export const AskCoachBody = zod.object({
+  "messages": zod.array(zod.object({
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string().min(1).max(askCoachBodyMessagesItemContentMax)
+})).min(1).max(askCoachBodyMessagesMax)
+})
+
+export const askCoachResponseReplyMax = 8000;
+
+export const askCoachResponseWorkoutsItemNameMax = 160;
+
+export const askCoachResponseWorkoutsItemNotesMax = 2000;
+
+export const askCoachResponseWorkoutsItemExercisesItemNameMax = 200;
+
+export const askCoachResponseWorkoutsItemExercisesItemSetsMax = 10;
+
+export const askCoachResponseWorkoutsItemExercisesItemRepsMax = 100;
+
+export const askCoachResponseWorkoutsItemExercisesItemNotesMax = 500;
+
+export const askCoachResponseWorkoutsItemExercisesMax = 12;
+
+export const askCoachResponseWorkoutsMax = 7;
+
+
+
+export const AskCoachResponse = zod.object({
+  "reply": zod.string().min(1).max(askCoachResponseReplyMax),
+  "workouts": zod.array(zod.object({
+  "name": zod.string().min(1).max(askCoachResponseWorkoutsItemNameMax),
+  "notes": zod.string().max(askCoachResponseWorkoutsItemNotesMax),
+  "exercises": zod.array(zod.object({
+  "name": zod.string().min(1).max(askCoachResponseWorkoutsItemExercisesItemNameMax),
+  "sets": zod.number().int().min(1).max(askCoachResponseWorkoutsItemExercisesItemSetsMax),
+  "reps": zod.string().min(1).max(askCoachResponseWorkoutsItemExercisesItemRepsMax),
+  "notes": zod.string().max(askCoachResponseWorkoutsItemExercisesItemNotesMax)
+})).min(1).max(askCoachResponseWorkoutsItemExercisesMax)
+})).max(askCoachResponseWorkoutsMax)
+})
+
+
+/**
  * @summary List the signed-in user's workouts
  */
 export const listWorkoutsResponseExercisesItemIdMax = 100;

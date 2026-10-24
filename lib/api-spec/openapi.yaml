@@ -11,6 +11,29 @@ tags:
   - name: health
     description: Health operations
 paths:
+  /openai/coach:
+    post:
+      operationId: askCoach
+      summary: Ask the AI training coach for advice or a draft workout plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoachConversation"
+      responses:
+        "200":
+          description: AI guidance and optional reviewable workout drafts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoachReply"
+        "400":
+          description: Invalid conversation
+        "429":
+          description: Please wait before asking again
+        "503":
+          description: AI coach temporarily unavailable
   /workouts:
     get:
       operationId: listWorkouts
@@ -93,6 +116,57 @@ paths:
                 $ref: "#/components/schemas/HealthStatus"
 components:
   schemas:
+    CoachMessage:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content: { type: string, minLength: 1, maxLength: 16000 }
+    CoachConversation:
+      type: object
+      required: [messages]
+      properties:
+        messages:
+          type: array
+          minItems: 1
+          maxItems: 16
+          items:
+            $ref: "#/components/schemas/CoachMessage"
+    CoachExercise:
+      type: object
+      additionalProperties: false
+      required: [name, sets, reps, notes]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        sets: { type: integer, minimum: 1, maximum: 10 }
+        reps: { type: string, minLength: 1, maxLength: 100 }
+        notes: { type: string, maxLength: 500 }
+    CoachRoutine:
+      type: object
+      additionalProperties: false
+      required: [name, notes, exercises]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 160 }
+        notes: { type: string, maxLength: 2000 }
+        exercises:
+          type: array
+          minItems: 1
+          maxItems: 12
+          items:
+            $ref: "#/components/schemas/CoachExercise"
+    CoachReply:
+      type: object
+      additionalProperties: false
+      required: [reply, workouts]
+      properties:
+        reply: { type: string, minLength: 1, maxLength: 8000 }
+        workouts:
+          type: array
+          maxItems: 7
+          items:
+            $ref: "#/components/schemas/CoachRoutine"
     WorkoutDeletion:
       type: object
       required: [updatedAt]

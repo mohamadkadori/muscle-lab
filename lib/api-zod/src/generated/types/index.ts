@@ -7,6 +7,12 @@
  */
 
 export * from './cloudWorkout';
+export * from './coachConversation';
+export * from './coachExercise';
+export * from './coachMessage';
+export * from './coachMessageRole';
+export * from './coachReply';
+export * from './coachRoutine';
 export * from './healthStatus';
 export * from './workoutDeletion';
 export * from './workoutExercise';

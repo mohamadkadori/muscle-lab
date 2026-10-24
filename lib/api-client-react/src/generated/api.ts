@@ -26,6 +26,8 @@ import type {
 
 import type {
   CloudWorkout,
+  CoachConversation,
+  CoachReply,
   HealthStatus,
   WorkoutDeletion,
   WorkoutImport,
@@ -59,6 +61,94 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   }
   return result;
 };
+
+export const getAskCoachUrl = () => {
+
+
+
+
+  return `/api/openai/coach`
+}
+
+/**
+ * @summary Ask the AI training coach for advice or a draft workout plan
+ */
+export const askCoach = async (coachConversation: CoachConversation, options?: Parameters<typeof customFetch>[1]): Promise<CoachReply> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<CoachReply>(getAskCoachUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(coachConversation)
+  }
+);}
+
+
+
+
+
+export const getAskCoachMutationKey = () => ['askCoach'] as const;
+
+export const getAskCoachMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof askCoach>>, TError,AskCoachMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof askCoach>>, TError,AskCoachMutationVariables, TContext> => {
+
+const mutationKey = getAskCoachMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof askCoach>>, AskCoachMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  askCoach(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AskCoachMutationResult = NonNullable<Awaited<ReturnType<typeof askCoach>>>
+    export type AskCoachMutationBody = BodyType<CoachConversation>
+    export type AskCoachMutationError = ErrorType<void>
+    export type AskCoachMutationVariables = {data: BodyType<CoachConversation>}
+
+    /**
+ * @summary Ask the AI training coach for advice or a draft workout plan
+ */
+export const useAskCoach = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof askCoach>>, TError,AskCoachMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof askCoach>>,
+        TError,
+        AskCoachMutationVariables,
+        TContext
+      > => {
+      return useMutation(getAskCoachMutationOptions(options), queryClient);
+    }
 
 export const getListWorkoutsUrl = () => {
 

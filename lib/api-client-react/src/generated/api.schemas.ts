@@ -5,6 +5,76 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+export type CoachMessageRole = typeof CoachMessageRole[keyof typeof CoachMessageRole];
+
+
+export const CoachMessageRole = {
+  user: 'user',
+  assistant: 'assistant',
+} as const;
+
+export interface CoachMessage {
+  role: CoachMessageRole;
+  /**
+     * @minLength 1
+     * @maxLength 16000
+     */
+  content: string;
+}
+
+export interface CoachConversation {
+  /**
+     * @minItems 1
+     * @maxItems 16
+     */
+  messages: CoachMessage[];
+}
+
+export interface CoachExercise {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  name: string;
+  /**
+     * @minimum 1
+     * @maximum 10
+     */
+  sets: number;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  reps: string;
+  /** @maxLength 500 */
+  notes: string;
+}
+
+export interface CoachRoutine {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  name: string;
+  /** @maxLength 2000 */
+  notes: string;
+  /**
+     * @minItems 1
+     * @maxItems 12
+     */
+  exercises: CoachExercise[];
+}
+
+export interface CoachReply {
+  /**
+     * @minLength 1
+     * @maxLength 8000
+     */
+  reply: string;
+  /** @maxItems 7 */
+  workouts: CoachRoutine[];
+}
+
 export interface WorkoutDeletion {
   updatedAt: string;
 }
