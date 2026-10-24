@@ -19,48 +19,42 @@ export default function About() {
           <h2 className="font-display text-2xl font-bold text-[#ecf39e]">How it works</h2>
           <p className="mt-3 text-[#f4f2e9]/85">Choose a muscle on the anatomy map, learn its job, pick a training region, and see the exercises that fit. Clear guidance, without the clutter.</p>
         </div>
-        <section className="mt-6 rounded-3xl bg-[#ecf39e] p-8 md:col-span-2 md:p-10" aria-labelledby="movement-stats-title">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/65">A desk-work reality check</p>
-          <h2 id="movement-stats-title" className="mt-3 max-w-2xl font-display text-3xl font-extrabold text-[#232a16] md:text-5xl">
-            Long hours at a screen can keep us still.
+        <section className="rounded-3xl bg-[#ecf39e] p-5 md:col-span-2 md:p-6" aria-labelledby="movement-stats-title">
+          <h2 id="movement-stats-title" className="font-display text-xl font-bold text-[#232a16] md:text-2xl">
+            Movement matters—even on coding days.
           </h2>
-          <p className="mt-4 max-w-3xl leading-relaxed text-[#232a16]/80">
-            People building software often spend much of the day at a desk. These studies did not measure software developers specifically, but research on adults and office workers shows why making room for movement matters.
-          </p>
-          <div className="mt-7 grid gap-4 md:grid-cols-2">
-            <article className="rounded-2xl bg-[#f4f2e9] p-6 md:p-7">
-              <p className="font-display text-5xl font-extrabold tracking-tight text-[#232a16] md:text-6xl">31%</p>
-              <p className="mt-3 font-display text-lg font-bold text-[#232a16]">of adults worldwide weren’t active enough</p>
-              <p className="mt-2 text-sm leading-relaxed text-[#232a16]/75">
-                An estimated 1.8 billion adults did not meet recommended activity levels in 2022.
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <article className="rounded-2xl bg-[#f4f2e9] p-4">
+              <p className="font-display text-3xl font-extrabold tracking-tight text-[#232a16]">31%</p>
+              <p className="mt-2 text-sm leading-relaxed text-[#232a16]/80">
+                of adults worldwide did not meet activity recommendations in 2022—about 1.8 billion people.
               </p>
               <a
                 href="https://www.who.int/news/item/26-06-2024-nearly-1-8-billion-adults-at-risk-of-disease-from-not-doing-enough-physical-activity"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-block text-sm font-semibold text-[#232a16] underline decoration-[#90a955] decoration-2 underline-offset-4"
+                className="mt-3 inline-block text-xs font-semibold text-[#232a16] underline decoration-[#90a955] decoration-2 underline-offset-4"
               >
-                Source: World Health Organization, 2024
+                WHO · 2024
               </a>
             </article>
-            <article className="rounded-2xl bg-[#232a16] p-6 text-[#f4f2e9] md:p-7">
-              <p className="font-display text-5xl font-extrabold tracking-tight text-[#ecf39e] md:text-6xl">+2.3 hrs</p>
-              <p className="mt-3 font-display text-lg font-bold">more sedentary time per day for office workers</p>
-              <p className="mt-2 text-sm leading-relaxed text-[#f4f2e9]/75">
-                A review of activity-tracking studies found office workers had 2.3 more sedentary hours and 14 fewer minutes of moderate-to-vigorous activity per day than nurses in occupational comparisons.
+            <article className="rounded-2xl bg-[#232a16] p-4 text-[#f4f2e9]">
+              <p className="font-display text-3xl font-extrabold tracking-tight text-[#ecf39e]">+2.3 hrs</p>
+              <p className="mt-2 text-sm leading-relaxed text-[#f4f2e9]/80">
+                of sedentary time per day for office workers compared with nurses, in a review of activity-tracking studies.
               </p>
               <a
                 href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11302194/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-block text-sm font-semibold text-[#ecf39e] underline decoration-[#90a955] decoration-2 underline-offset-4"
+                className="mt-3 inline-block text-xs font-semibold text-[#ecf39e] underline decoration-[#90a955] decoration-2 underline-offset-4"
               >
-                Source: Park et al., BMC Public Health, 2024
+                Park et al., BMC Public Health · 2024
               </a>
             </article>
           </div>
-          <p className="mt-4 text-xs leading-relaxed text-[#232a16]/65">
-            These are population-level findings, not a measurement of software developers or a personal health assessment.
+          <p className="mt-3 text-xs leading-relaxed text-[#232a16]/65">
+            Research on adults and office workers, not developers specifically. Not a personal health assessment.
           </p>
         </section>
         <div className="rounded-3xl border border-[#232a16]/30 p-8 md:col-span-2">
