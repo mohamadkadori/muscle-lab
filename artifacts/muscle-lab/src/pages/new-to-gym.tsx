@@ -23,7 +23,7 @@ export default function NewToGym() {
     <div className="mx-auto max-w-5xl px-5 pt-10 md:px-8 md:pt-16">
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/70">Beginner guide</p>
       <h1 className="mt-3 font-display text-5xl font-extrabold leading-[0.95] text-[#232a16] md:text-8xl">New to gym?<br />Good. Start here.</h1>
-      <p className="mt-6 max-w-xl text-lg text-[#232a16]/85">Nobody is watching you as closely as you think. Here is the short version of how to begin.</p>
+      <p className="mt-6 max-w-2xl text-lg text-[#232a16]/85">Don’t overthink it—just start your journey. You don’t need to know every exercise, have the perfect workout plan, or feel full of energy every time. Start small, learn the basics of good form as you go, and give yourself room to improve. Showing up is a great first step.</p>
 
       <section className="mt-10 grid gap-4 md:grid-cols-2" aria-label="Exercise and nutrition basics">
         <div className="rounded-3xl bg-[#ecf39e] p-6 md:p-8">
