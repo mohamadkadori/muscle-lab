@@ -41,6 +41,7 @@ muscleLab combines a clickable anatomy map, sample exercise library, beginner gu
 - On muscle pages, highlight the whole muscle initially; hovering its diagram highlights a submuscle, and clicking it reveals deeper information and matching exercises. Keep region buttons in sync.
 - Exercises are dummy content for now. The user will supply the exercise content to replace them.
 - Keep muscleLab at the left of the top navigation, with All exercises, New to gym?, My workouts, and About us at the right.
+- Present the AI coach as a small floating circle at the bottom-left, opening chat without leaving the current page.
 
 ## Gotchas
 

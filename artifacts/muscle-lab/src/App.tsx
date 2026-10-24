@@ -17,6 +17,7 @@ import NewToGym from '@/pages/new-to-gym';
 import Workouts from '@/pages/workouts';
 import About from '@/pages/about';
 import Coach from '@/pages/coach';
+import { CoachWidget } from '@/components/coach/coach-widget';
 import {
   Redirect,
   Route,
@@ -146,6 +147,11 @@ function KeyedCoach() {
   return <Coach key={user?.id ?? 'guest'} />;
 }
 
+function KeyedCoachWidget() {
+  const { user, isLoaded } = useUser();
+  return isLoaded ? <CoachWidget key={user?.id ?? 'guest'} /> : null;
+}
+
 function Router() {
   return (
     <RoutedErrorBoundary>
@@ -200,6 +206,7 @@ function ClerkProviderWithRoutes() {
         </main>
         <SiteFooter />
       </div>
+      <KeyedCoachWidget />
     </ClerkProvider>
   );
 }

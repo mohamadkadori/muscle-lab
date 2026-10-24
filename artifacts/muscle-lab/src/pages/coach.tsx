@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
 import { askCoach } from '@workspace/api-client-react';
 import { useMeta } from '@/hooks/use-meta';
 import { useWorkoutRepository, workoutError } from '@/hooks/use-workout-repository';
@@ -13,6 +13,11 @@ const STARTER = `Goal: \nDays per week: \nEquipment: \nExperience: \nSession len
 
 export default function Coach() {
   useMeta('AI coach | muscleLab', 'Ask general fitness questions and review draft workout plans before saving them.');
+  return <CoachChat />;
+}
+
+export function CoachChat({ embedded = false }: { embedded?: boolean }) {
+  const inputId = useId();
   const repo = useWorkoutRepository();
   const [items, setItems] = useState<TranscriptItem[]>([]);
   const [input, setInput] = useState('');
@@ -68,22 +73,24 @@ export default function Coach() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-5 pt-10 md:px-8 md:pt-16">
+    <div className={embedded ? 'px-4 pb-4' : 'mx-auto max-w-4xl px-5 pt-10 md:px-8 md:pt-16'}>
+      {!embedded && <>
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#232a16]/70">AI coach</p>
       <h1 className="mt-3 font-display text-5xl font-extrabold leading-[0.95] text-[#232a16] md:text-7xl">Ask the coach.</h1>
       <p className="mt-4 max-w-2xl text-[#232a16]/85">
         Ask training questions or request a draft plan. Review it first; nothing is saved until you press save.
       </p>
-      <div className="mt-4 rounded-2xl bg-[#ecf39e] p-4 text-sm text-[#232a16]" data-testid="text-disclaimer">
+      </>}
+      <div className={`mt-4 rounded-2xl bg-[#ecf39e] text-[#232a16] ${embedded ? 'p-3 text-xs leading-relaxed' : 'p-4 text-sm'}`} data-testid="text-disclaimer">
         General fitness information only, not medical advice. The AI can be wrong. Do not share names, health records or other sensitive details.
-        Your workouts and account data are never sent automatically. This chat lives only in this page and is lost on reload.
+        Your workouts and account data are never sent automatically. This chat is temporary and is lost on reload.
         {!repo.cloud && ' You are signed out, so saved routines stay in this browser only.'}
       </div>
 
-      <section className="mt-6 rounded-3xl bg-[#f4f2e9] p-4 md:p-6" aria-label="Conversation">
+      <section className={embedded ? 'mt-4' : 'mt-6 rounded-3xl bg-[#f4f2e9] p-4 md:p-6'} aria-label="Conversation">
         <div className="space-y-4" aria-live="polite">
           {items.length === 0 && (
-            <div className="rounded-2xl border border-dashed border-[#232a16]/30 p-6 text-center" data-testid="empty-coach">
+            <div className={`rounded-2xl border border-dashed border-[#232a16]/30 text-center ${embedded ? 'p-4' : 'p-6'}`} data-testid="empty-coach">
               <p className="font-display text-xl font-bold">No conversation yet</p>
               <p className="mt-1 text-sm text-[#232a16]/75">Fill in a plan profile to get a tailored draft, or ask a training question.</p>
               <button type="button" onClick={() => setInput(STARTER)} data-testid="button-starter"
@@ -121,8 +128,8 @@ export default function Coach() {
         )}
 
         <form onSubmit={send} className="mt-4">
-          <label htmlFor="coach-input" className="text-sm font-semibold">Your message</label>
-          <textarea id="coach-input" value={input} onChange={(e) => setInput(e.target.value)} rows={6} disabled={pending}
+          <label htmlFor={inputId} className="text-sm font-semibold">Your message</label>
+          <textarea id={inputId} value={input} onChange={(e) => setInput(e.target.value)} rows={embedded ? 3 : 6} disabled={pending}
             data-testid="input-coach"
             onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) send(); }}
             className="mt-1 w-full rounded-xl border-[1.5px] border-[#232a16] bg-white p-3 text-sm" />

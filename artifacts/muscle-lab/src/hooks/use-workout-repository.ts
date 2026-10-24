@@ -6,6 +6,8 @@ import {
 } from '@workspace/api-client-react';
 import { WORKOUT_STORAGE_KEY, deleteWorkout, loadWorkouts, saveWorkout, type Workout } from '@/lib/workout-storage';
 
+const LOCAL_WORKOUT_CHANGE = 'musclelab:workouts-changed';
+
 export function workoutError(error: unknown): string {
   if (error && typeof error === 'object' && 'data' in error) {
     const data = error.data;
@@ -30,9 +32,11 @@ export function useWorkoutRepository() {
     };
     window.addEventListener('storage', onStorage);
     window.addEventListener('focus', reload);
+    window.addEventListener(LOCAL_WORKOUT_CHANGE, reload);
     return () => {
       window.removeEventListener('storage', onStorage);
       window.removeEventListener('focus', reload);
+      window.removeEventListener(LOCAL_WORKOUT_CHANGE, reload);
     };
   }, []);
   const qc = useQueryClient();
@@ -67,6 +71,7 @@ export function useWorkoutRepository() {
       return saved;
     }
     saveWorkout(workout);
+    window.dispatchEvent(new Event(LOCAL_WORKOUT_CHANGE));
     const rows = await refresh();
     return rows.find((w) => w.id === workout.id)!;
   };
@@ -77,6 +82,7 @@ export function useWorkoutRepository() {
       qc.setQueryData<Workout[]>(key, (old = []) => old.filter((w) => w.id !== workout.id));
     } else {
       deleteWorkout(workout.id);
+      window.dispatchEvent(new Event(LOCAL_WORKOUT_CHANGE));
       await refresh();
     }
   };

@@ -9,7 +9,6 @@ const NAV = [
   { href: '/exercises', label: 'All exercises', id: 'exercises' },
   { href: '/new-to-gym', label: 'New to gym?', id: 'new' },
   { href: '/workouts', label: 'My workouts', id: 'workouts' },
-  { href: '/coach', label: 'AI coach', id: 'coach' },
   { href: '/about', label: 'About us', id: 'about' },
   { href: '/explorer', label: 'Anatomy explorer', id: 'explorer' },
 ];
