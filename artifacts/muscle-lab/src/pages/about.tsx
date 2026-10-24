@@ -19,7 +19,7 @@ export default function About() {
           <h2 className="font-display text-2xl font-bold text-[#ecf39e]">How it works</h2>
           <p className="mt-3 text-[#f4f2e9]/85">Choose a muscle on the anatomy map, learn its job, pick a training region, and see the exercises that fit. Clear guidance, without the clutter.</p>
         </div>
-        <section className="rounded-2xl border border-[#232a16]/15 p-4 md:col-span-2" aria-labelledby="movement-stats-title">
+        <section className="rounded-2xl border border-[#232a16]/15 p-4 md:col-span-2 bg-card" aria-labelledby="movement-stats-title">
           <h2 id="movement-stats-title" className="font-display text-base font-semibold text-[#232a16]">
             Movement matters for everyone.
           </h2>
