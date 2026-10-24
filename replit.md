@@ -36,6 +36,7 @@ muscleLab combines a clickable anatomy map, sample exercise library, beginner gu
 
 - Use #90A955 as the main green background and #ECF39E as the secondary color, with off-white and gray; anatomy diagrams should be white and gray.
 - The anatomy diagrams must look precisely like the supplied front/back reference pictures, not simplified body drawings. Preserve their proportions and detail when changing interactions.
+- Keep 2D diagrams selected by default. Offer the supplied Sketchfab Ecorche Anatomy Study as an optional 3D view, not a replacement for the clickable 2D map.
 - Hovering a muscle shows only its name and “Go to muscle page”; clicking opens the muscle information and exercises on a separate page.
 - On muscle pages, highlight the whole muscle initially; hovering its diagram highlights a submuscle, and clicking it reveals deeper information and matching exercises. Keep region buttons in sync.
 - Exercises are dummy content for now. The user will supply the exercise content to replace them.

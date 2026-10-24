@@ -2,6 +2,7 @@ import { Link } from 'wouter';
 import { motion } from 'framer-motion';
 import { MousePointerClick } from 'lucide-react';
 import { AnatomyFigure } from '@/components/anatomy-figure';
+import { DiagramViewer } from '@/components/diagram-viewer';
 import { MUSCLES } from '@/data/muscles';
 import { useMeta } from '@/hooks/use-meta';
 
@@ -45,6 +46,7 @@ export default function Explorer() {
           transition={{ duration: 0.7, delay: 0.1 }}
           className="relative rounded-[2rem] bg-[#f4f2e9] p-4 shadow-xl md:p-8"
         >
+          <DiagramViewer>
           <div className="grid grid-cols-2 gap-2 md:gap-6">
             {(['front', 'back'] as const).map((v) => (
               <div key={v}>
@@ -53,6 +55,7 @@ export default function Explorer() {
               </div>
             ))}
           </div>
+          </DiagramViewer>
         </motion.div>
       </div>
 

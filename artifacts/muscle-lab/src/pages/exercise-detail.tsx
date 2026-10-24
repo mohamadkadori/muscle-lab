@@ -2,6 +2,7 @@ import { Link, useParams } from 'wouter';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Dumbbell, Info, Target } from 'lucide-react';
 import { AnatomyFigure } from '@/components/anatomy-figure';
+import { DiagramViewer } from '@/components/diagram-viewer';
 import { Difficulty, ExerciseCard } from '@/components/exercise-card';
 import { EXERCISES, getExercise } from '@/data/exercises';
 import { getMuscle } from '@/data/muscles';
@@ -88,7 +89,9 @@ export default function ExerciseDetail() {
         </div>
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-[2rem] bg-[#f4f2e9] p-6 shadow-xl">
+            <DiagramViewer key={ex.slug} compact>
             <AnatomyFigure view={view} interactive={false} activeSlug={ex.muscle} className="mx-auto max-w-[220px]" />
+            </DiagramViewer>
           </div>
         </aside>
       </div>

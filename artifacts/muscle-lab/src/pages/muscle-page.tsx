@@ -3,6 +3,7 @@ import { Link, useParams } from 'wouter';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { AnatomyFigure } from '@/components/anatomy-figure';
+import { DiagramViewer } from '@/components/diagram-viewer';
 import { ExerciseCard } from '@/components/exercise-card';
 import { getMuscle } from '@/data/muscles';
 import { EXERCISES } from '@/data/exercises';
@@ -60,6 +61,7 @@ export default function MusclePage() {
       <div className="mt-3 grid gap-10 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-16">
         <motion.aside initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-[2rem] bg-[#f4f2e9] p-6 shadow-xl">
+            <DiagramViewer key={muscle.slug} compact>
             <p className="mb-3 text-center text-xs text-[#232a16]/75">Hover a region to explore. Click or tap for details.</p>
             <AnatomyFigure key={`${muscle.slug}-${view}`} view={view} interactive={false} activeSlug={muscle.slug} activeRegion={region === 'all' ? undefined : region} onRegionSelect={chooseRegion} className="mx-auto max-w-[240px]" />
             {activeRegion && (
@@ -84,6 +86,7 @@ export default function MusclePage() {
                 ))}
               </div>
             )}
+            </DiagramViewer>
           </div>
         </motion.aside>
 
