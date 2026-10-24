@@ -2,8 +2,8 @@ import { useId, useRef, useState, type KeyboardEvent, type MouseEvent } from 're
 import { useLocation } from 'wouter';
 import { ArrowUpRight } from 'lucide-react';
 import { BACK, FRONT, MIRROR, REGION_RECTS, type View } from '@/data/anatomy-paths';
-import frontImg from '@assets/eac9892c-2f81-4186-888a-63a9575c4cd9.jpg_1792839462087.jpeg';
-import backImg from '@assets/ea3e7204-887f-4b7e-ae73-4565fa5206e3.jpg_1792839462088.jpeg';
+import frontImg from '@/assets/anatomy-front.jpeg';
+import backImg from '@/assets/anatomy-back.jpeg';
 import { getMuscle } from '@/data/muscles';
 
 interface Props {

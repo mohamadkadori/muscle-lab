@@ -1,4 +1,5 @@
 - [Workout account migration](workout-storage-scope.md) — cloud routines belong to signed-in accounts; copying guest routines requires consent and preserves browser originals.
 - [API generator exports](api-generator-exports.md) — generated wildcard exports can restore schema-name collisions; handwritten barrel aliases are not a durable fix.
 - [GitHub connection visibility](github-access.md) — healthy authorization can still lack runtime access; use an already-authenticated CLI rather than repeatedly reconnecting.
+- [Required uploaded assets](required-assets.md) — promote runtime uploads out of attached_assets before GitHub backups; global ignore rules can drop force-added files later.
 - [AI coach privacy](ai-coach-privacy.md) — no automatic account-data uploads or workout mutations; model plans require validation, review, and explicit saving.
