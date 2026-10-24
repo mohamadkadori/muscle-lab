@@ -2,4 +2,5 @@
 - [API generator exports](api-generator-exports.md) — generated wildcard exports can restore schema-name collisions; handwritten barrel aliases are not a durable fix.
 - [GitHub connection visibility](github-access.md) — healthy authorization can still lack runtime access; use an already-authenticated CLI rather than repeatedly reconnecting.
 - [Required uploaded assets](required-assets.md) — promote runtime uploads out of attached_assets before GitHub backups; global ignore rules can drop force-added files later.
+- [About-page statistics](about-statistics.md) — keep activity statistics compact and secondary; developers are only an example, not the audience of the data.
 - [AI coach privacy](ai-coach-privacy.md) — no automatic account-data uploads or workout mutations; model plans require validation, review, and explicit saving.

@@ -19,39 +19,37 @@ export default function About() {
           <h2 className="font-display text-2xl font-bold text-[#ecf39e]">How it works</h2>
           <p className="mt-3 text-[#f4f2e9]/85">Choose a muscle on the anatomy map, learn its job, pick a training region, and see the exercises that fit. Clear guidance, without the clutter.</p>
         </div>
-        <section className="rounded-3xl bg-[#ecf39e] p-5 md:col-span-2 md:p-6" aria-labelledby="movement-stats-title">
-          <h2 id="movement-stats-title" className="font-display text-xl font-bold text-[#232a16] md:text-2xl">
+        <section className="rounded-2xl border border-[#232a16]/15 p-4 md:col-span-2" aria-labelledby="movement-stats-title">
+          <h2 id="movement-stats-title" className="font-display text-base font-semibold text-[#232a16]">
             Movement matters for everyone.
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-[#232a16]/80">
+          <p className="mt-1 text-[13px] leading-relaxed text-[#232a16]/80">
             Whether you study, work, or care for a family, making time to move matters.
             Developers are just one example of people whose daily routines can involve long stretches of sitting.
           </p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <article className="rounded-2xl bg-[#f4f2e9] p-4">
-              <p className="font-display text-3xl font-extrabold tracking-tight text-[#232a16]">31%</p>
-              <p className="mt-2 text-sm leading-relaxed text-[#232a16]/80">
-                of adults worldwide did not meet activity recommendations in 2022—about 1.8 billion people.
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 sm:divide-x sm:divide-[#232a16]/15">
+            <article className="sm:pr-3">
+              <p className="text-[13px] leading-relaxed text-[#232a16]/80">
+                <strong className="font-semibold text-[#232a16]">31%</strong> of adults worldwide did not meet activity recommendations in 2022—about 1.8 billion people.
               </p>
               <a
                 href="https://www.who.int/news/item/26-06-2024-nearly-1-8-billion-adults-at-risk-of-disease-from-not-doing-enough-physical-activity"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-block text-xs font-semibold text-[#232a16] underline decoration-[#90a955] decoration-2 underline-offset-4"
+                className="mt-1 inline-block text-xs text-[#232a16]/80 underline underline-offset-2 hover:text-[#232a16]"
               >
                 WHO · 2024
               </a>
             </article>
-            <article className="rounded-2xl bg-[#232a16] p-4 text-[#f4f2e9]">
-              <p className="font-display text-3xl font-extrabold tracking-tight text-[#ecf39e]">150 min</p>
-              <p className="mt-2 text-sm leading-relaxed text-[#f4f2e9]/80">
-                of moderate-intensity physical activity per week is the minimum WHO recommends for adults.
+            <article className="sm:pl-3">
+              <p className="text-[13px] leading-relaxed text-[#232a16]/80">
+                <strong className="font-semibold text-[#232a16]">150 min</strong> of moderate-intensity physical activity per week is the minimum WHO recommends for adults.
               </p>
               <a
                 href="https://www.who.int/news-room/fact-sheets/detail/physical-activity"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-block text-xs font-semibold text-[#ecf39e] underline decoration-[#90a955] decoration-2 underline-offset-4"
+                className="mt-1 inline-block text-xs text-[#232a16]/80 underline underline-offset-2 hover:text-[#232a16]"
               >
                 WHO · Adult activity guidance
               </a>
