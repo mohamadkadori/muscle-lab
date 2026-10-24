@@ -1,2 +1,3 @@
 - [Workout account migration](workout-storage-scope.md) — cloud routines belong to signed-in accounts; copying guest routines requires consent and preserves browser originals.
 - [API generator exports](api-generator-exports.md) — generated wildcard exports can restore schema-name collisions; handwritten barrel aliases are not a durable fix.
+- [GitHub connection visibility](github-access.md) — healthy authorization can still lack runtime access; use an already-authenticated CLI rather than repeatedly reconnecting.
