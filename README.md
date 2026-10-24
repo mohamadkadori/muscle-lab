@@ -1,7 +1,7 @@
 # muscleLab
 
 muscleLab is an interactive anatomy and exercise guide for understanding which muscles you train and building your own routines.
-
+https://muscle-lab.replit.app
 ## What’s included
 
 - **Anatomy explorer:** clickable front/back 2D muscle maps, with an optional external 3D anatomy view.
