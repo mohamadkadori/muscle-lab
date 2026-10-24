@@ -272,6 +272,24 @@
 .region-highlight rect {
   fill: rgba(236, 243, 158, 0.85);
 }
+.region-hotspot {
+  cursor: pointer;
+  outline: none;
+}
+.region-hotspot rect {
+  fill: transparent;
+  pointer-events: all;
+  transition: fill 0.18s ease;
+}
+.region-hotspot[data-active='true'] rect {
+  fill: rgba(236, 243, 158, 0.8);
+}
+.region-hotspot[data-hovered='true'] rect,
+.region-hotspot:focus-visible rect {
+  fill: rgba(236, 243, 158, 0.95);
+  stroke: #232a16;
+  stroke-width: 2;
+}
 
 .grain::after {
   content: '';

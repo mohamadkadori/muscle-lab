@@ -1,4 +1,4 @@
-import { useRef, useState, type KeyboardEvent, type MouseEvent } from 'react';
+import { useId, useRef, useState, type KeyboardEvent, type MouseEvent } from 'react';
 import { useLocation } from 'wouter';
 import { ArrowUpRight } from 'lucide-react';
 import { BACK, FRONT, MIRROR, REGION_RECTS, type View } from '@/data/anatomy-paths';
@@ -11,14 +11,24 @@ interface Props {
   interactive?: boolean;
   activeSlug?: string;
   activeRegion?: string;
+  onRegionSelect?: (region: string) => void;
   className?: string;
 }
 
-export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegion, className = '' }: Props) {
+export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegion, onRegionSelect, className = '' }: Props) {
   const [, navigate] = useLocation();
   const wrap = useRef<HTMLDivElement>(null);
-  const [tip, setTip] = useState<{ slug: string; x: number; y: number } | null>(null);
+  const [tip, setTip] = useState<{ slug: string; region?: string; x: number; y: number } | null>(null);
+  const clipId = useId().replace(/:/g, '');
   const parts = view === 'front' ? FRONT : BACK;
+  const activeMuscle = activeSlug ? getMuscle(activeSlug) : undefined;
+  const activePart = parts.find((p) => p.slug === activeSlug);
+  const regions = activeMuscle?.regions.filter((r) => {
+    if (!REGION_RECTS[activeMuscle.slug]?.[r.id]) return false;
+    if (activeMuscle.slug === 'shoulders') return view === 'back' ? r.id === 'rear' || r.id === 'side' : r.id !== 'rear';
+    if (activeMuscle.slug === 'traps' && view === 'front') return r.id === 'upper';
+    return true;
+  }) ?? [];
 
   const place = (slug: string, cx: number, cy: number) => {
     const r = wrap.current?.getBoundingClientRect();
@@ -39,6 +49,7 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegi
   };
 
   const tipMuscle = tip ? getMuscle(tip.slug) : null;
+  const tipRegion = tipMuscle?.regions.find((r) => r.id === tip?.region);
 
   return (
     <div ref={wrap} className={`relative ${className}`} onMouseLeave={() => setTip(null)}>
@@ -60,7 +71,7 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegi
           };
           if (!interactive) {
             return (
-              <g key={p.slug} {...common} style={{ cursor: 'default' }}>
+              <g key={p.slug} {...common} pointerEvents="none" style={{ cursor: 'default' }}>
                 {p.paths.map((d, i) => (
                   <g key={i}>
                     <path className="m" d={d} />
@@ -94,11 +105,11 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegi
             </g>
           );
         })}
-        {activeSlug && activeRegion && REGION_RECTS[activeSlug]?.[activeRegion] && (() => {
+        {activeSlug && activeRegion && !onRegionSelect && REGION_RECTS[activeSlug]?.[activeRegion] && (() => {
           const part = parts.find((p) => p.slug === activeSlug);
           if (!part) return null;
           const [x, y, w, h] = REGION_RECTS[activeSlug][activeRegion];
-          const id = `clip-${view}-${activeSlug}`;
+          const id = `clip-${clipId}-${view}-${activeSlug}`;
           return (
             <g className="region-highlight" aria-hidden="true" pointerEvents="none">
               <clipPath id={id}>{part.paths.map((d, i) => <path key={i} d={d} />)}</clipPath>
@@ -112,16 +123,71 @@ export function AnatomyFigure({ view, interactive = true, activeSlug, activeRegi
             </g>
           );
         })()}
+        {onRegionSelect && activeMuscle && activePart && (
+          <>
+            <defs>
+              <clipPath id={`regions-${clipId}`}>
+                {activePart.paths.map((d, i) => <path key={i} d={d} />)}
+              </clipPath>
+            </defs>
+            {regions.map((r) => {
+              const [x, y, width, height] = REGION_RECTS[activeMuscle.slug][r.id];
+              // On the back view the rear delt occupies the visible shoulder cap.
+              const bounds = activeMuscle.slug === 'shoulders' && r.id === 'rear'
+                ? { x: 110, y: 190, width: 60, height: 110 }
+                : { x, y, width, height };
+              return (
+                <g
+                  key={r.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${r.name}. View submuscle details`}
+                  aria-pressed={activeRegion === r.id}
+                  className="region-hotspot"
+                  data-active={activeRegion === r.id}
+                  data-hovered={tip?.region === r.id}
+                  data-testid={`region-${view}-${r.id}`}
+                  onClick={() => onRegionSelect(r.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      onRegionSelect(r.id);
+                    }
+                  }}
+                  onMouseMove={(e) => {
+                    const box = wrap.current?.getBoundingClientRect();
+                    if (box) setTip({ slug: activeMuscle.slug, region: r.id, x: e.clientX - box.left, y: e.clientY - box.top });
+                  }}
+                  onMouseLeave={() => setTip(null)}
+                  onFocus={(e) => {
+                    const box = wrap.current?.getBoundingClientRect();
+                    const target = e.currentTarget.getBoundingClientRect();
+                    if (box) setTip({ slug: activeMuscle.slug, region: r.id, x: target.left + target.width / 2 - box.left, y: target.top - box.top });
+                  }}
+                  onBlur={() => setTip(null)}
+                >
+                  {[undefined, MIRROR].map((transform, i) => (
+                    <g key={i} transform={transform}>
+                      <g clipPath={`url(#regions-${clipId})`}>
+                        <rect {...bounds} />
+                      </g>
+                    </g>
+                  ))}
+                </g>
+              );
+            })}
+          </>
+        )}
       </svg>
-      {tip && tipMuscle && interactive && (
+      {tip && tipMuscle && (interactive || onRegionSelect) && (
         <div
           className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-[130%] whitespace-nowrap rounded-xl bg-[#232a16] px-3.5 py-2 text-[#f4f2e9] shadow-lg"
           style={{ left: tip.x, top: tip.y }}
           data-testid="tooltip-muscle"
         >
-          <div className="font-display text-sm font-bold leading-tight">{tipMuscle.name}</div>
+          <div className="font-display text-sm font-bold leading-tight">{tipRegion?.name ?? tipMuscle.name}</div>
           <div className="mt-0.5 flex items-center gap-1 font-mono text-[11px] text-[#ecf39e]">
-            Go to muscle page <ArrowUpRight className="h-3 w-3" />
+            {tipRegion ? 'View submuscle details' : 'Go to muscle page'} <ArrowUpRight className="h-3 w-3" />
           </div>
         </div>
       )}

@@ -37,7 +37,7 @@ _Describe the high-level user-facing capabilities of this app once they exist._
 - Use #90A955 as the main green background and #ECF39E as the secondary color, with off-white and gray; anatomy diagrams should be white and gray.
 - The anatomy diagrams must look precisely like the supplied front/back reference pictures, not simplified body drawings. Preserve their proportions and detail when changing interactions.
 - Hovering a muscle shows only its name and “Go to muscle page”; clicking opens the muscle information and exercises on a separate page.
-- Show submuscle choices after opening a group, including upper, mid, and lower chest.
+- On muscle pages, highlight the whole muscle initially; hovering its diagram highlights a submuscle, and clicking it reveals deeper information and matching exercises. Keep region buttons in sync.
 - Exercises are dummy content for now. The user will supply the exercise content to replace them.
 - Keep muscleLab at the left of the top navigation, with All exercises, New to gym?, and About us at the right.
 
