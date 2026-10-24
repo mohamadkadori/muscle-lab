@@ -117,6 +117,34 @@ export function SiteFooter() {
           ))}
         </div>
       </div>
+      <section className="mx-auto max-w-7xl px-5 pb-10 md:px-8" aria-labelledby="footer-contributors-title">
+        <div className="border-t border-[#f4f2e9]/20 pt-6">
+          <h2 id="footer-contributors-title" className="font-display text-sm font-bold text-[#f4f2e9]/80">Contributors</h2>
+          <ul className="mt-3 flex flex-col gap-4 text-sm sm:flex-row sm:flex-wrap sm:gap-x-8">
+            <li>
+              <a
+                href="https://github.com/Ahmad-katan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-sm font-semibold text-[#ecf39e] underline underline-offset-4 hover:text-[#f4f2e9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ecf39e]"
+              >
+                Ahmad-katan
+              </a>
+              <p className="mt-1 text-[#f4f2e9]/80">Co-author &amp; Collaborator</p>
+            </li>
+            <li>
+              <a
+                href="https://github.com/mohamadkadori"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-sm font-semibold text-[#ecf39e] underline underline-offset-4 hover:text-[#f4f2e9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ecf39e]"
+              >
+                mohamadkadori
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
     </footer>
   );
 }
